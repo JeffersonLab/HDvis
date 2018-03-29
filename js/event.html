@@ -295,15 +295,7 @@
         }
     ];
 
-    var tracking_menu = [
-        {
-            name: 'thing1',
-            title: 'thing1',
-            fun: function () {
-                alert('i did a thing 1')
-            }
-        }
-    ];
+
 
     var settings =  {
         triggerOn:'contextmenu'
@@ -618,7 +610,7 @@
         }*/
 
         //console.log(document.getElementById('contextmenu').style.left);
-        INTERSECTED_OBJECT=raytracing(event);
+        raytracing(event);
 
     }
 
@@ -1835,13 +1827,32 @@
             outlinePass.selectedObjects = selectedObjects;
         }
 
-        $('body').contextMenu('destroy');
+        //$('body').contextMenu('destroy');
         if(valid_intersect) {
 
             console.log(valid_intersect.name);
 
             if (valid_intersect.name.split("_")[0] === "track") {
 
+                var hypo_submenu=[];
+                var hypolist=valid_intersect.userData['track_hypos'];
+                for(var hypo_index=0;hypo_index<hypolist.length;hypo_index++)
+                {
+                    const name = hypolist[hypo_index].id;
+                    hypo_submenu.push({name: hypolist[hypo_index].id.split(" ")[0], title: hypolist[hypo_index].id.split(" ")[0], fun: function(){
+                            ChangeTrackHypoTo(valid_intersect, name)}})
+
+                }
+                var tracking_menu = [
+                    {
+                        name: 'Hypotheses',
+                        title: 'Hypotheses',
+                        subMenu: hypo_submenu,
+                        fun: function () {
+                            alert(valid_intersect.name)
+                        }
+                    }
+                ];
                 $('body').contextMenu(tracking_menu, settings);
             }
             else if (valid_intersect.name.split("_")[0] === "BCAL") {
@@ -1860,7 +1871,63 @@
 
         return valid_intersect;
     }
+    function ChangeTrackHypoTo(object, Hypoidto)
+    {
+        //alert(idfrom+"---->"+Hypoidto);
+        var found_index=-1;
+        for(var i = 0;i < object.userData.track_hypos.length;i++)
+        {
+            if(object.userData.track_hypos[i].id === Hypoidto)
+            {
+                found_index=i;
+            }
+        }
+        console.log(object);
 
+        recursiveRemove(object);
+
+        object.userData.TrackChiSq_NDF=object.userData.track_hypos[found_index].TrackChiSq_NDF;
+        object.userData.charge=object.userData.track_hypos[found_index].charge;
+        object.userData.current_hypo=object.userData.track_hypos[found_index].id;
+        object.userData.mass=object.userData.track_hypos[found_index].mass;
+        object.userData.momentum=object.userData.track_hypos[found_index].momentum;
+        object.userData.position=object.userData.track_hypos[found_index].position;
+        object.userData.start_time=object.userData.track_hypos[found_index].start_time;
+        object.userData.steps=object.userData.track_hypos[found_index].points;
+        object.name="track_"+object.userData.track_hypos[found_index].id;
+        object.geometry.name=object.userData.track_hypos[found_index].id;
+
+        var geometry = new THREE.Geometry();
+        geometry.name = object.userData.track_hypos[found_index].id;
+        object.userData.track_hypos[found_index].points.forEach(function (point) {
+            var vertex = new THREE.Vector3();
+            vertex.x = point[0];
+            vertex.y = point[1];
+            vertex.z = point[2];
+
+            //setRGB(track_color.r,track_color.g,track_color.b);
+            geometry.vertices.push(vertex);
+        });
+        var linematerial = new THREE.LineBasicMaterial({color: 0xffffff , linewidth: 2});
+        linematerial.side = THREE.DoubleSide;
+        var lineBufferGeo = new THREE.BufferGeometry().fromGeometry(geometry);
+        lineBufferGeo.drawRange.count = 0;
+        var positions = new Float32Array(geometry.vertices.length * 3); // 3 vertices per point
+        lineBufferGeo.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+        var trackLineMesh = new THREE.Line(lineBufferGeo, linematerial);
+        trackLineMesh.frustumCulled = false;
+        trackLineMesh.name = "trackline_track_" + geometry.name;
+
+        object.add(trackLineMesh);
+
+        object.geometry=geometry;
+
+        object.geometryNeedsUpdate=true;
+        console.log(object);
+        UpdateAnimationTriggers(scene.getObjectByName('GluexEvent').children);
+        firstShowing=true;
+
+    }
     function render() {
 
         if(asciibool)

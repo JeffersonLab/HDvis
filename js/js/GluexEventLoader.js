@@ -146,7 +146,8 @@ THREE.GluexEventLoader.prototype = {
                         TrackChiSq_NDF: track_to_display.TrackChiSq_NDF,
                         start_time: track_to_display.start_time,
                         steps: track_to_display.points,
-                        track_hypos:track.TrackHypos
+                        track_hypos:track.TrackHypos,
+                        current_hypo: track.BestTrackingPID
                     }
                     trackMesh.name = geometry.name;
 
