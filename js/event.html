@@ -275,6 +275,40 @@
 
     keyState: new Array();
 
+    var generic_menu = [
+        {
+            name: 'thing3',
+            title: 'thing3',
+            fun: function () {
+                alert('i did a thing 3')
+            }
+        }
+    ];
+
+    var BCALHit_menu = [
+        {
+            name: 'thing2',
+            title: 'thing2',
+            fun: function () {
+                alert('i did a thing 2')
+            }
+        }
+    ];
+
+    var tracking_menu = [
+        {
+            name: 'thing1',
+            title: 'thing1',
+            fun: function () {
+                alert('i did a thing 1')
+            }
+        }
+    ];
+
+    var settings =  {
+        triggerOn:'contextmenu'
+    };
+
 
     init();
     animate();
@@ -503,61 +537,8 @@
         context1.fillStyle = "rgba(0,0,0,0.95)";
         context1.fillText('', 0, 20);
 
-        var generic_menu = [
-            {
-                name: 'thing3',
-                title: 'thing3',
-                fun: function () {
-                    alert('i did a thing 3')
-                }
-            }
-        ];
-        var tracking_menu = [
-            {
-                name: 'thing1',
-                title: 'thing1',
-                fun: function () {
-                    alert('i did a thing 1')
-                }
-            }
-        ];
-        var BCALHit_menu = [
-            {
-                name: 'thing2',
-                title: 'thing2',
-                fun: function () {
-                    alert('i did a thing 2')
-                }
-            }
-        ];
-        var menu=generic_menu;
-        var settings =  {
-            triggerOn:'contextmenu',
-            onOpen: function(data, event) {
 
-                if(INTERSECTED_OBJECT) {
-                    console.log(INTERSECTED_OBJECT.name);
-
-                    if (INTERSECTED_OBJECT.name.split("_")[0] === "track") {
-                        menu = tracking_menu;
-                    }
-                    else if (INTERSECTED_OBJECT.name.split("_")[0] === "BCAL") {
-                        menu = BCALHit_menu;
-                    }
-                }
-                else
-                {
-                    menu=generic_menu;
-                }
-                console.log("here is where I would put your stuff, where you build the menu based on what you are clicking on...");
-                console.log("I think I would recommend storing the object that you are clicking on, into an available javascript object *when you hover over it*");
-                console.log("and then access this object on the onOpen callback in the menu.");
-                console.log("I think you can even rebuild the menu in this onOpen callback, if you want");
-            }
-        };
-        $('body').contextMenu(menu, settings);
-
-
+        $('body').contextMenu(generic_menu);
         // GUI----------------------------------------------------------------------------------------
         ViewerConfig=makeGUI(scene);
     }
@@ -1852,6 +1833,29 @@
             DumpObjectUserData(INTERSECTED_OBJECT);
             addSelectedObject(INTERSECTED_OBJECT);
             outlinePass.selectedObjects = selectedObjects;
+        }
+
+        $('body').contextMenu('destroy');
+        if(valid_intersect) {
+
+            console.log(valid_intersect.name);
+
+            if (valid_intersect.name.split("_")[0] === "track") {
+
+                $('body').contextMenu(tracking_menu, settings);
+            }
+            else if (valid_intersect.name.split("_")[0] === "BCAL") {
+                $('body').contextMenu(BCALHit_menu,settings);
+            }
+            else
+            {
+                $('body').contextMenu(generic_menu,settings);
+            }
+        }
+        else
+        {
+            //$('body').contextMenu('destroy');
+            $('body').contextMenu(generic_menu, settings);
         }
 
         return valid_intersect;
