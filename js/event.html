@@ -12,6 +12,7 @@
             /*background: #f0f0f0 url("background_dark1.jpg");*/
         }
 
+
         .button {
             display: inline-block;
             position: relative;
@@ -109,7 +110,9 @@
     <link rel="stylesheet" type="text/css" href="dat.gui.css" />
 
 </head>
-<body>
+<body id="body">
+
+
 
 <script src="js/three.min.js"></script>
 <script src="js/controls/OrbitControls.js"></script>
@@ -133,7 +136,7 @@
 
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/contextMenu.js-master/contextMenu.js"></script>
-
+<link href="js/contextMenu.js-master/contextMenu.css" rel="stylesheet" type="text/css" />
 
 <!--<script src="js/vr/WebVR.js"></script>-->
 <!--<script src="js/threex.geometricglowmesh.js"></script>-->
@@ -143,7 +146,6 @@
 <script src="js/effects/AsciiEffect.js"></script>
 <script src="js/effects/VREffect.js"></script>
 <!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
-
 
 <nav style="position:absolute; left: 100px; z-index: 100">
     <!--<a href="#" class="button green">button</a>-->
@@ -156,6 +158,7 @@
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock </span>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="play_pause" > <a href="#" class="button gray" OnClick="togglePlay()">play/pause</a> </span>
     <div style="position: absolute; top: 125px; left: -90px; width: 1000px; white-space: pre-line;" id="ObjectInfo"> </div>
+
 </nav>
 <script>
     function togglePlay(){
@@ -450,6 +453,8 @@
         document.addEventListener( 'keydown', onKeyDown, false );
         document.addEventListener('mouseup',SelectObject,false);
         document.addEventListener('mousedown',RecordCameraFacing,false);
+        //$(document).bind("contextmenu",function(event){DisplayContextMenu(event);});
+        //document.addEventListener('contextmenu',DisplayContextMenu,false);
 
 
         document.addEventListener('touchend',function(event){
@@ -492,11 +497,65 @@
 
 
         canvas1 = document.createElement('canvas');
+
         context1 = canvas1.getContext('2d');
         context1.font = "Bold 20px Arial";
         context1.fillStyle = "rgba(0,0,0,0.95)";
         context1.fillText('', 0, 20);
 
+        var generic_menu = [
+            {
+                name: 'thing3',
+                title: 'thing3',
+                fun: function () {
+                    alert('i did a thing 3')
+                }
+            }
+        ];
+        var tracking_menu = [
+            {
+                name: 'thing1',
+                title: 'thing1',
+                fun: function () {
+                    alert('i did a thing 1')
+                }
+            }
+        ];
+        var BCALHit_menu = [
+            {
+                name: 'thing2',
+                title: 'thing2',
+                fun: function () {
+                    alert('i did a thing 2')
+                }
+            }
+        ];
+        var menu=generic_menu;
+        var settings =  {
+            triggerOn:'contextmenu',
+            onOpen: function(data, event) {
+
+                if(INTERSECTED_OBJECT) {
+                    console.log(INTERSECTED_OBJECT.name);
+
+                    if (INTERSECTED_OBJECT.name.split("_")[0] === "track") {
+                        menu = tracking_menu;
+                    }
+                    else if (INTERSECTED_OBJECT.name.split("_")[0] === "BCAL") {
+                        menu = BCALHit_menu;
+                    }
+                }
+                else
+                {
+                    menu=generic_menu;
+                }
+                console.log("here is where I would put your stuff, where you build the menu based on what you are clicking on...");
+                console.log("I think I would recommend storing the object that you are clicking on, into an available javascript object *when you hover over it*");
+                console.log("and then access this object on the onOpen callback in the menu.");
+                console.log("I think you can even rebuild the menu in this onOpen callback, if you want");
+            }
+        };
+        $('body').contextMenu(menu, settings);
 
 
         // GUI----------------------------------------------------------------------------------------
@@ -508,15 +567,15 @@
         camera_in_use.getWorldDirection(recordedCamera_facing);
 
     }
-    function DisplayContextMenu(INTERSECTED_OBJECT)
+    function DisplayContextMenu(event)
     {
-        console.log(INTERSECTED_OBJECT.name);
+
     }
     function SelectObject(event)
     {
+
         if(event.button===0 )
         {
-
             if(!ObjectLock)
             {
                 INTERSECTED_OBJECT=raytracing(event);
@@ -550,11 +609,12 @@
             camera_in_use.getWorldDirection(camera_facing);
             if(camera_facing.x===recordedCamera_facing.x && camera_facing.y===recordedCamera_facing.y && camera_facing.z===recordedCamera_facing.z)
             {
-                INTERSECTED_OBJECT = raytracing(event);
-                if (INTERSECTED_OBJECT !== null) {
-                    //menu
-                    DisplayContextMenu(INTERSECTED_OBJECT);
-                }
+                DisplayContextMenu(event);
+                //INTERSECTED_OBJECT = raytracing(event);
+                //if (INTERSECTED_OBJECT !== null) {
+                //menu
+
+                //}
 
             }
 
@@ -569,7 +629,15 @@
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         //sprite1.position.set(mouse.x, mouse.y, 1 );
-        raytracing(event);
+        //console.log(document.getElementById('contextmenu').style.left);
+
+        /*if(document.getElementById('contextmenu').style.display==="none") {
+            document.getElementById('contextmenu').style.left = event.clientX + "px";
+            document.getElementById('contextmenu').style.top = event.clientY + "px";
+        }*/
+
+        //console.log(document.getElementById('contextmenu').style.left);
+        INTERSECTED_OBJECT=raytracing(event);
 
     }
 
@@ -1639,6 +1707,9 @@
     }
 
     function DumpObjectUserData(object) {
+
+        if(!object)
+            return;
 
         var message = "";
         var objSplit = object.name.split("_");
