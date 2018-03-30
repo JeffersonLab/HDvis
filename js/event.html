@@ -1908,7 +1908,24 @@
             //setRGB(track_color.r,track_color.g,track_color.b);
             geometry.vertices.push(vertex);
         });
-        var linematerial = new THREE.LineBasicMaterial({color: 0xffffff , linewidth: 2});
+
+        var trackcolor = new THREE.Color;
+
+        if(object.userData.charge === 1)
+        {
+            trackcolor=ViewerConfig.positive_track_color;
+        }
+        else if(object.userData.charge === -1)
+        {
+            trackcolor=ViewerConfig.negative_track_color;
+        }
+        if(object.userData.charge === 0)
+        {
+            trackcolor=ViewerConfig.neutral_track_color;
+        }
+
+
+        var linematerial = new THREE.LineBasicMaterial({color:new THREE.Color(trackcolor[0]/255.,trackcolor[1]/255.,trackcolor[2]/255.)  , linewidth: 2});
         linematerial.side = THREE.DoubleSide;
         var lineBufferGeo = new THREE.BufferGeometry().fromGeometry(geometry);
         lineBufferGeo.drawRange.count = 0;
@@ -1920,8 +1937,14 @@
 
         object.add(trackLineMesh);
 
+
+
         object.geometry=geometry;
 
+        object.material.color.setRGB(trackcolor[0]/255.,trackcolor[1]/255.,trackcolor[2]/255.);
+        object.geometry.colorsNeedUpdate = true;
+
+        object.colorsNeedUpdate=true;
         object.geometryNeedsUpdate=true;
         console.log(object);
         UpdateAnimationTriggers(scene.getObjectByName('GluexEvent').children);
