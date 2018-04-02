@@ -275,26 +275,70 @@
 
     keyState: new Array();
 
+    function switchToOrtho()
+    {
+        orthobool=true;
+        camera_in_use.toOrthographic();
+
+        resetWindowSize();camera_in_use.setZoom(1);controls_in_use.update();camera_in_use.updateMatrixWorld();camera_in_use.updateProjectionMatrix();
+    }
+    function switchToPerspec()
+    {
+        orthobool=false;
+        camera_in_use.toPerspective();
+
+        resetWindowSize();camera_in_use.setZoom(1);controls_in_use.update();camera_in_use.updateMatrixWorld();camera_in_use.updateProjectionMatrix();
+    }
+
+    function snapTo(x,y,z)
+    {
+        combinedcamera.position.z =z;// 371;
+        combinedcamera.position.x=x;//-625;
+        combinedcamera.position.y=y;//56;
+
+        perspec_camera.position.z =z;// 371;
+        perspec_camera.position.x=x;//-625;
+        perspec_camera.position.y=y;//56;
+    }
+
     var generic_menu = [
         {
-            name: 'thing3',
-            title: 'thing3',
-            fun: function () {
-                alert('i did a thing 3')
-            }
+            name: 'camera',
+            subMenu:[{
+                name: "Camera Type",
+                subMenu: [
+                    {
+                        name: "Orthographic",
+                        title: "Orthographic",
+                        fun: function(){ switchToOrtho() }
+                    },
+                    {
+                        name: "Perspective",
+                        title: "Perspective",
+                        fun: function(){ switchToPerspec() }
+                    }
+
+                ]
+            },
+                {
+                    name: "Snap To",
+                    subMenu: [
+                        {
+                            name: "Origin",
+                            title: "Origin",
+                            fun: function(){ snapTo(0,0,0) }
+                        },
+                        {
+                            name: "TOF",
+                            title: "TOF",
+                            fun: function(){ snapTo(2.7,7.6,427) }
+                        }
+
+                    ]
+                }]
+
         }
     ];
-
-    var BCALHit_menu = [
-        {
-            name: 'thing2',
-            title: 'thing2',
-            fun: function () {
-                alert('i did a thing 2')
-            }
-        }
-    ];
-
 
 
     var settings =  {
@@ -540,9 +584,35 @@
         camera_in_use.getWorldDirection(recordedCamera_facing);
 
     }
-    function DisplayContextMenu(event)
+    function DisplayContextMenu(valid_intersect)
     {
+        if (valid_intersect.name.split("_")[0] === "track") {
 
+            var hypo_submenu=[];
+            var hypolist=valid_intersect.userData['track_hypos'];
+            for(var hypo_index=0;hypo_index<hypolist.length;hypo_index++)
+            {
+                const name = hypolist[hypo_index].id;
+                hypo_submenu.push({name: hypolist[hypo_index].id.split(" ")[0], title: hypolist[hypo_index].id.split(" ")[0], fun: function(){
+                        ChangeTrackHypoTo(valid_intersect, name)}})
+
+            }
+            var tracking_menu = [
+                {
+                    name: 'Hypotheses',
+                    title: 'Hypotheses',
+                    subMenu: hypo_submenu
+                    /*fun: function () {
+                        alert(valid_intersect.name)
+                    }*/
+                }
+            ];
+            $('body').contextMenu(tracking_menu, settings);
+        }
+        else
+        {
+            $('body').contextMenu(generic_menu,settings);
+        }
     }
     function SelectObject(event)
     {
@@ -576,7 +646,7 @@
             }
 
         }
-        else if(event.button===2 )
+        /*else if(event.button===2 )
         {
 
             camera_in_use.getWorldDirection(camera_facing);
@@ -591,7 +661,7 @@
 
             }
 
-        }
+        }*/
 
 
     }
@@ -1809,10 +1879,11 @@
 
         if(!ObjectLock) {
             if (valid_intersect) {
-
+                DisplayContextMenu(valid_intersect);
                 DumpObjectUserData(valid_intersect);
                 addSelectedObject(valid_intersect);
                 outlinePass.selectedObjects = selectedObjects;
+
             }
             else {
 
@@ -1823,7 +1894,7 @@
         }
         else
         {
-
+            DisplayContextMenu(INTERSECTED_OBJECT);
             DumpObjectUserData(INTERSECTED_OBJECT);
             addSelectedObject(INTERSECTED_OBJECT);
             outlinePass.selectedObjects = selectedObjects;
@@ -1832,38 +1903,9 @@
         //$('body').contextMenu('destroy');
         if(valid_intersect) {
 
-            console.log(valid_intersect.name);
+            //console.log(valid_intersect.name);
 
-            if (valid_intersect.name.split("_")[0] === "track") {
 
-                var hypo_submenu=[];
-                var hypolist=valid_intersect.userData['track_hypos'];
-                for(var hypo_index=0;hypo_index<hypolist.length;hypo_index++)
-                {
-                    const name = hypolist[hypo_index].id;
-                    hypo_submenu.push({name: hypolist[hypo_index].id.split(" ")[0], title: hypolist[hypo_index].id.split(" ")[0], fun: function(){
-                            ChangeTrackHypoTo(valid_intersect, name)}})
-
-                }
-                var tracking_menu = [
-                    {
-                        name: 'Hypotheses',
-                        title: 'Hypotheses',
-                        subMenu: hypo_submenu,
-                        fun: function () {
-                            alert(valid_intersect.name)
-                        }
-                    }
-                ];
-                $('body').contextMenu(tracking_menu, settings);
-            }
-            else if (valid_intersect.name.split("_")[0] === "BCAL") {
-                $('body').contextMenu(BCALHit_menu,settings);
-            }
-            else
-            {
-                $('body').contextMenu(generic_menu,settings);
-            }
         }
         else
         {
