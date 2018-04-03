@@ -155,12 +155,22 @@
     <a href="#" class="button gray" OnClick="next_click()">next</a>
     <a id="autoPlay" href="#" class="button gray" OnClick="autoplay_click()">autoplay</a>
     <span id="janaStatus" style="color: darkgray"> JANA status </span>
-    <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock </span>
+    <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock  </span>
+    <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="play_pause" > <a href="#" class="button gray" OnClick="togglePlay()">play/pause</a> </span>
     <div style="position: absolute; top: 125px; left: -90px; width: 1000px; white-space: pre-line;" id="ObjectInfo"> </div>
 
 </nav>
 <script>
+
+    function updateProgressBar() {
+        var progressBar = document.getElementById('progress-bar');
+        var percentage = Math.floor((100 / (ViewerConfig.max_clock_time-ViewerConfig.min_clock_time)) *
+            (SceneClock-ViewerConfig.min_clock_time));
+        progressBar.value = percentage;
+        progressBar.innerHTML = percentage + '% played';
+    }
+
     function togglePlay(){
         if(isPlaying)
         {
@@ -882,6 +892,7 @@
             SceneClock=timeToShow;
             $("#EventClock").text(timeToShow.toFixed(3) + " ns");
         }
+        updateProgressBar();
     }
     function animateFCALHits(SceneTime,eventobj) {
         if (eventobj.userData.t > ViewerConfig.max_clock_time ||
@@ -1666,6 +1677,9 @@
             }
         }
 
+        document.getElementById('progress-bar').min=ViewerConfig.min_clock_time;
+        document.getElementById('progress-bar').max=ViewerConfig.max_clock_time;
+
         if(min_start_time<ViewerConfig.min_clock_time)
         {
             min_start_time=ViewerConfig.min_clock_time;
@@ -1674,6 +1688,7 @@
         {
             max_total_time=ViewerConfig.max_clock_time;
         }
+
 
     }
 
