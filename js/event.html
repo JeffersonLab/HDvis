@@ -106,6 +106,45 @@
         }
 
 
+        .slidecontainer {
+            width: 100%; /* Width of the outside container */
+        }
+
+        /* The slider itself */
+        .slider {
+            -webkit-appearance: none;  /* Override default CSS styles */
+            appearance: none;
+            width: 100%; /* Full-width */
+            height: 25px; /* Specified height */
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+        }
+
+        /* Mouse-over effects */
+        .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+        }
+
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #4CAF50; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #4CAF50; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+
     </style>
     <link rel="stylesheet" type="text/css" href="dat.gui.css" />
 
@@ -134,9 +173,11 @@
 <script src="js/postprocessing/ShaderPass.js"></script>
 <script src="js/postprocessing/OutlinePass.js"></script>
 
+
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/contextMenu.js-master/contextMenu.js"></script>
 <link href="js/contextMenu.js-master/contextMenu.css" rel="stylesheet" type="text/css" />
+
 
 <!--<script src="js/vr/WebVR.js"></script>-->
 <!--<script src="js/threex.geometricglowmesh.js"></script>-->
@@ -156,6 +197,9 @@
     <a id="autoPlay" href="#" class="button gray" OnClick="autoplay_click()">autoplay</a>
     <span id="janaStatus" style="color: darkgray"> JANA status </span>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock  </span>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput=SetSceneTime()>
+    </div>
     <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="play_pause" > <a href="#" class="button gray" OnClick="togglePlay()">play/pause</a> </span>
     <div style="position: absolute; top: 125px; left: -90px; width: 1000px; white-space: pre-line;" id="ObjectInfo"> </div>
@@ -163,11 +207,23 @@
 </nav>
 <script>
 
+    function SetSceneTime()
+    {
+        var valueToSet=document.getElementById('myRange').value;
+
+        var TimeToSet= ((parseFloat(valueToSet)/100.)*(ViewerConfig.max_clock_time-ViewerConfig.min_clock_time))+ViewerConfig.min_clock_time;
+        SceneClock=TimeToSet;
+        console.log(SceneClock);
+    }
+
     function updateProgressBar() {
+        var slider=document.getElementById('myRange');
+
         var progressBar = document.getElementById('progress-bar');
         var percentage = Math.floor((100 / (ViewerConfig.max_clock_time-ViewerConfig.min_clock_time)) *
             (SceneClock-ViewerConfig.min_clock_time));
         progressBar.value = percentage;
+        slider.value=percentage;
         progressBar.innerHTML = percentage + '% played';
     }
 
@@ -1676,6 +1732,9 @@
                 }
             }
         }
+
+        //document.getElementById('myRange').min=ViewerConfig.min_clock_time;
+        //document.getElementById('myRange').max=ViewerConfig.max_clock_time;
 
         document.getElementById('progress-bar').min=ViewerConfig.min_clock_time;
         document.getElementById('progress-bar').max=ViewerConfig.max_clock_time;
