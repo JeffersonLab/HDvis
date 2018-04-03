@@ -290,7 +290,7 @@
         resetWindowSize();camera_in_use.setZoom(1);controls_in_use.update();camera_in_use.updateMatrixWorld();camera_in_use.updateProjectionMatrix();
     }
 
-    function snapTo(x,y,z)
+    function snapTo(x,y,z,fx,fy,fz)
     {
         combinedcamera.position.z =z;// 371;
         combinedcamera.position.x=x;//-625;
@@ -299,6 +299,25 @@
         perspec_camera.position.z =z;// 371;
         perspec_camera.position.x=x;//-625;
         perspec_camera.position.y=y;//56;
+
+        combinedcamera.lookAt(new THREE.Vector3(fx,fy,fz));
+        perspec_camera.lookAt(new THREE.Vector3(fx,fy,fz));
+
+
+        camera_facing.x=fx;
+        camera_facing.y=fy;
+        camera_facing.z=fz;
+        RecordCameraFacing();
+
+        resetOrbitPoint(controls_in_use,camera_in_use,camera_facing);
+
+
+
+
+        combinedcamera.updateMatrixWorld();
+        perspec_camera.updateMatrixWorld();
+
+        render();
     }
 
     var generic_menu = [
@@ -326,12 +345,23 @@
                         {
                             name: "Origin",
                             title: "Origin",
-                            fun: function(){ snapTo(0,0,0) }
+                            fun: function(){ snapTo(0,0,0,0,0,1000) }
                         },
                         {
                             name: "TOF",
                             title: "TOF",
-                            fun: function(){ snapTo(2.7,7.6,427) }
+                            fun: function(){ snapTo(2.7,7.6,427,0,0,1000) }
+                        }
+                        ,
+                        {
+                            name: "FCAL",
+                            title: "FCAL",
+                            fun: function(){ snapTo(0,0,885,0,0,0) }
+                        },
+                        {
+                            name: "Barrel Top",
+                            title: "Barrel Top",
+                            fun: function(){ snapTo(0,370,210,0,0,210) }
                         }
 
                     ]
