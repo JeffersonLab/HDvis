@@ -132,15 +132,15 @@
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none; /* Override default look */
             appearance: none;
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
+            width: 10px; /* Set a specific slider handle width */
+            height: 35px; /* Slider handle height */
             background: #4CAF50; /* Green background */
             cursor: pointer; /* Cursor on hover */
         }
 
         .slider::-moz-range-thumb {
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
+            width: 10px; /* Set a specific slider handle width */
+            height: 35px; /* Slider handle height */
             background: #4CAF50; /* Green background */
             cursor: pointer; /* Cursor on hover */
         }
@@ -198,7 +198,7 @@
     <span id="janaStatus" style="color: darkgray"> JANA status </span>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock  </span>
     <div class="slidecontainer">
-        <input type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput=SetSceneTime()>
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput="SetSceneTime(this.value);doAnimation()" />
     </div>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="play_pause" > <a href="#" class="button gray" OnClick="togglePlay()">play/pause</a> </span>
     <div style="position: absolute; top: 125px; left: -90px; width: 1000px; white-space: pre-line;" id="ObjectInfo"> </div>
@@ -906,9 +906,10 @@
         }
     }
 
-    function SetSceneTime()
+    function SetSceneTime(value)
     {
-        var valueToSet=document.getElementById('myRange').value;
+
+        var valueToSet=/*document.getElementById('myRange').*/value;
 
         var TimeToSet= ((parseFloat(valueToSet)/100.)*(ViewerConfig.max_clock_time-ViewerConfig.min_clock_time))+ViewerConfig.min_clock_time;
         SceneClockOffset=TimeToSet;
@@ -920,6 +921,7 @@
         //console.log(clock.elapsedTime);
         //console.log("SET THIS TIME:");
         //console.log(TimeToSet);
+
     }
     function updateClockMessage(clock,time_scale) {
 
@@ -927,7 +929,7 @@
         //console.log("Clock Message:");
         //console.log(clock.getElapsedTime());
         var SceneTime = clock.getElapsedTime() * time_scale + (SceneClockOffset-min_start_time);
-        console.log(SceneTime);
+        //console.log(SceneTime);
 
         var timeToShow = (min_start_time + SceneTime);
         if(SceneTime+min_start_time > max_total_time+2*time_scale)
@@ -1757,19 +1759,8 @@
 
     }
 
-    function animate() {
-
-        requestAnimationFrame( animate ); //may need a vr bool for rift.....
-
-        if(controls_in_use === stereocontrols)
-            controls_in_use.update();
-
-        if(!isPlaying)
-        {
-            render();
-            return;
-        }
-
+    function doAnimation()
+    {
         var time_scale=ViewerConfig.time_scale;
         updateClockMessage(clock,time_scale);
 
@@ -1838,6 +1829,21 @@
 
             }
         }
+    }
+    function animate() {
+
+        requestAnimationFrame( animate ); //may need a vr bool for rift.....
+
+        if(controls_in_use === stereocontrols)
+            controls_in_use.update();
+
+        if(!isPlaying)
+        {
+            render();
+            return;
+        }
+
+        doAnimation();
 
         render();
 
@@ -1891,6 +1897,7 @@
         var total_data = userDataList.length;
 
         if (objType === "track") {
+            total_data--;
             total_data--;
         }
 
