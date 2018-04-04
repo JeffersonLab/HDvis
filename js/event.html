@@ -207,14 +207,7 @@
 </nav>
 <script>
 
-    function SetSceneTime()
-    {
-        var valueToSet=document.getElementById('myRange').value;
 
-        var TimeToSet= ((parseFloat(valueToSet)/100.)*(ViewerConfig.max_clock_time-ViewerConfig.min_clock_time))+ViewerConfig.min_clock_time;
-        SceneClock=TimeToSet;
-        console.log(SceneClock);
-    }
 
     function updateProgressBar() {
         var slider=document.getElementById('myRange');
@@ -326,7 +319,7 @@
 
     var gluexGeometry = null;
 
-    var SceneClock;
+    var SceneClock=0;
     var SceneClockOffset=0.;
     var isPlaying=true;
     var max_swim_steps=0;
@@ -915,10 +908,29 @@
             }
         }
     }
+
+    function SetSceneTime()
+    {
+        var valueToSet=document.getElementById('myRange').value;
+
+        var TimeToSet= ((parseFloat(valueToSet)/100.)*(ViewerConfig.max_clock_time-ViewerConfig.min_clock_time))+ViewerConfig.min_clock_time;
+        SceneClockOffset=TimeToSet;
+        SceneClock=TimeToSet;
+
+        //console.log(clock.elapsedTime);
+        clock.stop();
+        clock.start();
+        //console.log(clock.elapsedTime);
+        //console.log("SET THIS TIME:");
+        //console.log(TimeToSet);
+    }
     function updateClockMessage(clock,time_scale) {
 
+        updateProgressBar();
+        //console.log("Clock Message:");
+        //console.log(clock.getElapsedTime());
         var SceneTime = clock.getElapsedTime() * time_scale + (SceneClockOffset-min_start_time);
-
+        console.log(SceneTime);
 
         var timeToShow = (min_start_time + SceneTime);
         if(SceneTime+min_start_time > max_total_time+2*time_scale)
@@ -948,7 +960,7 @@
             SceneClock=timeToShow;
             $("#EventClock").text(timeToShow.toFixed(3) + " ns");
         }
-        updateProgressBar();
+
     }
     function animateFCALHits(SceneTime,eventobj) {
         if (eventobj.userData.t > ViewerConfig.max_clock_time ||
