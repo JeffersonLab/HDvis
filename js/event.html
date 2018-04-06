@@ -431,9 +431,7 @@
             name: 'Hypotheses',
             title: 'Hypotheses',
             subMenu: []
-            /*fun: function () {
-                alert(valid_intersect.name)
-            }*/
+
         }
     ];
 
@@ -441,6 +439,7 @@
         triggerOn:'contextmenu'
     };
 
+    var menu_to_use;
 
     init();
     animate();
@@ -499,6 +498,8 @@
 
         container = document.createElement( 'div' );
         document.body.appendChild( container );
+
+
 
         scene = new THREE.Scene();
 
@@ -669,8 +670,8 @@
         context1.fillStyle = "rgba(0,0,0,0.95)";
         context1.fillText('', 0, 20);
 
-
-        $('body').contextMenu(generic_menu);
+        menu_to_use=generic_menu;
+        $('body').contextMenu(menu_to_use,settings);
         // GUI----------------------------------------------------------------------------------------
         ViewerConfig=makeGUI(scene);
     }
@@ -682,10 +683,14 @@
     }
     function DisplayContextMenu(valid_intersect)
     {
-        if (valid_intersect.name.split("_")[0] === "track") {
+        if(!valid_intersect)
+        {
+            menu_to_use=generic_menu;
+            $('body').contextMenu(generic_menu,settings);
+        }
+        else if (valid_intersect.name.split("_")[0] === "track") {
 
             tracking_menu[0].subMenu=[];
-            var hypo_submenu=[];
             var hypolist=valid_intersect.userData['track_hypos'];
             for(var hypo_index=0;hypo_index<hypolist.length;hypo_index++)
             {
@@ -695,10 +700,12 @@
 
             }
 
+            menu_to_use=tracking_menu;
             $('body').contextMenu(tracking_menu, settings);
         }
         else
         {
+            menu_to_use=generic_menu;
             $('body').contextMenu(generic_menu,settings);
         }
     }
@@ -1901,6 +1908,7 @@
         if (objType === "track") {
             total_data--;
             total_data--;
+            total_data--;
         }
 
         for (var i = 0; i < total_data; i++) {
@@ -2007,13 +2015,14 @@
             else {
 
                 INTERSECTED_OBJECT = null;
+                DisplayContextMenu(INTERSECTED_OBJECT);
                 updateObjectInfoPane("");
 
             }
         }
         else
         {
-            DisplayContextMenu(INTERSECTED_OBJECT);
+            //DisplayContextMenu(INTERSECTED_OBJECT);
             DumpObjectUserData(INTERSECTED_OBJECT);
             addSelectedObject(INTERSECTED_OBJECT);
             outlinePass.selectedObjects = selectedObjects;
