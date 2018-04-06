@@ -329,6 +329,9 @@
 
     var selectedObjects = [];
 
+    var attached_camera=false;
+    var attached_name="track_Pi- Track Points 0";
+
     keyState: new Array();
 
     function switchToOrtho()
@@ -355,6 +358,7 @@
         perspec_camera.position.z =z;// 371;
         perspec_camera.position.x=x;//-625;
         perspec_camera.position.y=y;//56;
+
 
         combinedcamera.lookAt(new THREE.Vector3(fx,fy,fz));
         perspec_camera.lookAt(new THREE.Vector3(fx,fy,fz));
@@ -1490,6 +1494,14 @@
             if ((((eventobj.userData.steps[draw_count])[3]) + track_start) > SceneTime) {
                 break;
             }
+        }
+
+        if(attached_camera && attached_name === eventobj.name && SceneTime>=track_start)
+        {
+
+            console.log(eventobj.userData.steps[draw_count][0]);
+            snapTo(eventobj.userData.steps[draw_count][0],eventobj.userData.steps[draw_count][1],eventobj.userData.steps[draw_count][2],camera_facing.x,camera_facing.y,camera_facing.z);
+
         }
 
         if (thisGeo) {
