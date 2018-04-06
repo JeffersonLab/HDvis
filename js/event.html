@@ -201,7 +201,7 @@
         <input type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput="SetSceneTime(this.value);doAnimation()" />
     </div>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="play_pause" > <a href="#" class="button gray" OnClick="togglePlay()">play/pause</a> </span>
-    <div style="position: absolute; top: 125px; left: -90px; width: 1000px; white-space: pre-line;" id="ObjectInfo"> </div>
+    <div style="position: absolute; top: 225px; left: -90px; width: 1000px; white-space: pre-line;" id="ObjectInfo"> </div>
 
 </nav>
 <script>
@@ -426,6 +426,16 @@
         }
     ];
 
+    var tracking_menu = [
+        {
+            name: 'Hypotheses',
+            title: 'Hypotheses',
+            subMenu: []
+            /*fun: function () {
+                alert(valid_intersect.name)
+            }*/
+        }
+    ];
 
     var settings =  {
         triggerOn:'contextmenu'
@@ -674,25 +684,17 @@
     {
         if (valid_intersect.name.split("_")[0] === "track") {
 
+            tracking_menu[0].subMenu=[];
             var hypo_submenu=[];
             var hypolist=valid_intersect.userData['track_hypos'];
             for(var hypo_index=0;hypo_index<hypolist.length;hypo_index++)
             {
                 const name = hypolist[hypo_index].id;
-                hypo_submenu.push({name: hypolist[hypo_index].id.split(" ")[0], title: hypolist[hypo_index].id.split(" ")[0], fun: function(){
+                tracking_menu[0].subMenu.push({name: hypolist[hypo_index].id.split(" ")[0], title: hypolist[hypo_index].id.split(" ")[0], fun: function(){
                         ChangeTrackHypoTo(valid_intersect, name)}})
 
             }
-            var tracking_menu = [
-                {
-                    name: 'Hypotheses',
-                    title: 'Hypotheses',
-                    subMenu: hypo_submenu
-                    /*fun: function () {
-                        alert(valid_intersect.name)
-                    }*/
-                }
-            ];
+
             $('body').contextMenu(tracking_menu, settings);
         }
         else
@@ -2017,19 +2019,6 @@
             outlinePass.selectedObjects = selectedObjects;
         }
 
-        //$('body').contextMenu('destroy');
-        if(valid_intersect) {
-
-            //console.log(valid_intersect.name);
-
-
-        }
-        else
-        {
-            //$('body').contextMenu('destroy');
-            $('body').contextMenu(generic_menu, settings);
-        }
-
         return valid_intersect;
     }
     function ChangeTrackHypoTo(object, Hypoidto)
@@ -2109,8 +2098,10 @@
         object.geometryNeedsUpdate=true;
         console.log(object);
         UpdateAnimationTriggers(scene.getObjectByName('GluexEvent').children);
-        firstShowing=true;
 
+        firstShowing=true;
+        doAnimation();
+        render();
     }
     function render() {
 
