@@ -880,6 +880,7 @@
             case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);raytracing(event);break;//d
             case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);raytracing(event);break;//spacebar
             case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);raytracing(event);break;//z
+            case 82: event.preventDefault();CatchARide();break;
 
         }
         camera_in_use.updateMatrixWorld();
@@ -890,6 +891,29 @@
 
     }
     //
+    function CatchARide()
+    {
+        var objToAtt=INTERSECTED_OBJECT;
+
+        if(objToAtt)
+        {
+            if (objToAtt.name.split('_')[0] === "track") {
+
+                attached_camera=true;
+                attached_name=objToAtt.name;
+                console.log(objToAtt.name)
+            }
+            else {
+                attached_camera=false;
+            }
+        }
+        else
+        {
+            attached_camera=false;
+        }
+
+    }
+
     function resetOrbitPoint(controls,camera,camera_facing)
     {
 
@@ -1498,9 +1522,14 @@
 
         if(attached_camera && attached_name === eventobj.name && SceneTime>=track_start)
         {
+            var facing_index=draw_count+1;
+            if(draw_count >= eventobj.userData.steps.length ) {
+                draw_count = eventobj.userData.steps.length - 1;
+                facing_index=draw_count;
+            }
 
-            console.log(eventobj.userData.steps[draw_count][0]);
-            snapTo(eventobj.userData.steps[draw_count][0],eventobj.userData.steps[draw_count][1],eventobj.userData.steps[draw_count][2],camera_facing.x,camera_facing.y,camera_facing.z);
+            //console.log(eventobj.userData.steps[draw_count][0]);
+            snapTo(eventobj.userData.steps[draw_count][0],eventobj.userData.steps[draw_count][1],eventobj.userData.steps[draw_count][2],eventobj.userData.steps[facing_index][0],eventobj.userData.steps[facing_index][1],eventobj.userData.steps[facing_index][2]);
 
         }
 
