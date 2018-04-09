@@ -70,8 +70,8 @@ public:
                 auto momentum = ChargedTracks[i]->dChargedTrackHypotheses[w]->momentum();
                 auto charge = ChargedTracks[i]->dChargedTrackHypotheses[w]->charge();
                 auto start_time = -1E9;
-                if (!isnan(float(ChargedTracks[i]->dChargedTrackHypotheses[w]->t0()))) {
-                    start_time = ChargedTracks[i]->dChargedTrackHypotheses[w]->t0();
+                if (!isnan(float(ChargedTracks[i]->dChargedTrackHypotheses[w]->time()))) {
+                    start_time = ChargedTracks[i]->dChargedTrackHypotheses[w]->time();
                 }
 
                 double TrackChiSq_NDF = ChargedTracks[i]->Get_Hypothesis(PID)->Get_TrackTimeBased()->chisq /
