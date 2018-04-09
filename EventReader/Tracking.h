@@ -159,8 +159,8 @@ public:
                 auto position = NeutralTracks[i]->dNeutralParticleHypotheses[w]->position();
                 auto mass = NeutralTracks[i]->dNeutralParticleHypotheses[w]->mass();
                 auto start_time = -1E9;
-                if (!isnan(float(NeutralTracks[i]->dNeutralParticleHypotheses[w]->t0()))) {
-                    start_time = NeutralTracks[i]->dNeutralParticleHypotheses[w]->t0();
+                if (!isnan(float(NeutralTracks[i]->dNeutralParticleHypotheses[w]->time()))) {
+                    start_time = NeutralTracks[i]->dNeutralParticleHypotheses[w]->time();
                 }
 
                 rt->Swim(NeutralTracks[i]->dNeutralParticleHypotheses[w]->position(), momentum,
