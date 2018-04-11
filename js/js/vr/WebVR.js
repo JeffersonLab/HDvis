@@ -24,7 +24,7 @@ var WEBVR = {
 
                     if ( displays.length === 0 ) {
 
-                        reject( 'WebVR supported, but no VRDisplays found.' );
+                        alert( 'WebVR supported, but no VRDisplays found.' );
 
                     } else {
 
