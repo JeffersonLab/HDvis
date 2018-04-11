@@ -179,13 +179,15 @@
 <link href="js/contextMenu.js-master/contextMenu.css" rel="stylesheet" type="text/css" />
 
 
-<!--<script src="js/vr/WebVR.js"></script>-->
+<script src="js/vr/WebVR.js"></script>
+<script src="js/vr/OculusRiftEffect.js"></script>
 <!--<script src="js/threex.geometricglowmesh.js"></script>-->
 <!--<script src="js/threex.dilategeometry.js"></script>-->
 <!--<script src="js/threex.atmospherematerial.js"></script>-->
 <!--<script src="js/cameras/CombinedCamera.js"></script>-->
 <script src="js/effects/AsciiEffect.js"></script>
 <script src="js/effects/VREffect.js"></script>
+
 <!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
 
 <nav style="position:absolute; left: 100px; z-index: 100">
@@ -291,8 +293,8 @@
     var clock = new THREE.Clock();
     var container, stats;
 
-    var camera_in_use,combinedcamera, perspec_camera,controls_in_use, scene, shadowgeom, shadowevent, renderer, raycaster;
-    var ASCIIEffect,StereoEffect,OcculusEffect;
+    var camera_in_use,combinedcamera, perspec_camera,webVR_camera, controls_in_use, scene, shadowgeom, shadowevent, renderer, raycaster;
+    var ASCIIEffect,StereoEffect,OculusEffect;
     var regcontrols,asciicontrols,stereocontrols,perspecregcontrols;
     var outlinePass,composer,effectFXAA;
 
@@ -334,6 +336,8 @@
 
     keyState: new Array();
 
+    WEBVR.checkAvailability().catch(function (message) {console.log(WEBVR.getMessageContainer(message))});
+
     function switchToOrtho()
     {
         orthobool=true;
@@ -359,6 +363,9 @@
         perspec_camera.position.x=x;//-625;
         perspec_camera.position.y=y;//56;
 
+        webVRCamera.position.x=x;
+        webVRCamera.position.y=y;
+        webVRCamera.position.z=z;
 
         combinedcamera.lookAt(new THREE.Vector3(fx,fy,fz));
         perspec_camera.lookAt(new THREE.Vector3(fx,fy,fz));
@@ -571,9 +578,27 @@
 
         stereocontrols= new THREE.DeviceOrientationControls(perspec_camera);
 
-        OcculusEffect = new THREE.VREffect(renderer);
-        OcculusEffect.setSize( window.innerWidth || 1, window.innerHeight || 1);
-        OcculusEffect.shadowMapAutoUpdate = false;
+        OculusEffect =new THREE.OculusRiftEffect(
+            renderer,
+            {worldScale: 100}); new THREE.VREffect(renderer);
+        OculusEffect.setSize( window.innerWidth || 1, window.innerHeight || 1);
+        OculusEffect.shadowMapAutoUpdate = false;
+
+        if(renderer.vr) {
+            WEBVR.getVRDisplay(function (display) {
+                renderer.vr.setDevice(display);
+                webVRCamera = new THREE.WebVRCamera(display,renderer);
+                webVRCamera.updateMatrixWorld();
+                scene.add(webVRCamera);
+                webVRCamera.position.x=13;
+                webVRCamera.position.y=0;
+                webVRCamera.position.z=510;
+
+                document.body.appendChild(WEBVR.getButton(display, renderer.domElement)); //THIS SHOULD ONLY SPAWN WHEN WANTED
+            });
+        }
+
+
 
         //------POST--------
         composer = new THREE.EffectComposer(renderer);
@@ -835,6 +860,9 @@
                 }
                 else
                 {
+                    if(renderer.vr){
+                        WEBVR.getVRDisplay(function (display){renderer.vr.setDevice(display)});
+                    }
                     controls_in_use = regcontrols;VRbool=true;
                 }
                 break;
@@ -874,12 +902,12 @@
                     controls_in_use = perspecregcontrols;stereobool=true;
                 }
                 break;
-            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);perspec_camera.translateZ(-MoveDelta);raytracing(event);break;//w
-            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);perspec_camera.translateZ(MoveDelta);raytracing(event);break;//s
-            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);perspec_camera.translateX(-MoveDelta);raytracing(event);break;//a
-            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);raytracing(event);break;//d
-            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);raytracing(event);break;//spacebar
-            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);raytracing(event);break;//z
+            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);perspec_camera.translateZ(-MoveDelta);webVR_camera.translateZ(-MoveDelta);raytracing(event);break;//w
+            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);perspec_camera.translateZ(MoveDelta);webVR_camera.translateZ(MoveDelta);raytracing(event);break;//s
+            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);perspec_camera.translateX(-MoveDelta);webVR_camera.translateX(-MoveDelta);raytracing(event);break;//a
+            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);webVR_camera.translateX(MoveDelta);raytracing(event);break;//d
+            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);webVR_camera.translateY(MoveDelta);raytracing(event);break;//spacebar
+            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);webVR_camera.translateY(-MoveDelta);raytracing(event);break;//z
             case 82: event.preventDefault();CatchARide();break;
 
         }
@@ -2165,7 +2193,9 @@
         }
         else if( VRbool)
         {
-            OcculusEffect.render(scene, camera_in_use);
+            renderer.vr.enable=true;
+            renderer.render(scene,perspec_camera);
+            OculusEffect.render(scene, camera_in_use);
         }
         else
         {
