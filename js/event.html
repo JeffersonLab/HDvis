@@ -331,7 +331,7 @@
 
     var selectedObjects = [];
 
-    var attached_camera=true;
+    var attached_camera=false;
     var attached_name="track_Pi- Track Points 0";
 
     keyState: new Array();
@@ -2200,11 +2200,12 @@
         object.colorsNeedUpdate=true;
         object.geometryNeedsUpdate=true;
         console.log(object);
-        UpdateAnimationTriggers(scene.getObjectByName('GluexEvent').children);
+        //UpdateAnimationTriggers(scene.getObjectByName('GluexEvent').children);
 
         firstShowing=true;
-        doAnimation();
-        render();
+      //  doAnimation();
+        //if(!isPlaying)
+        //    render();
     }
     function render() {
 
