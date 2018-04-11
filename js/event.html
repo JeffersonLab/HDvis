@@ -293,7 +293,7 @@
     var clock = new THREE.Clock();
     var container, stats;
 
-    var camera_in_use,combinedcamera, perspec_camera,webVR_camera, controls_in_use, scene, shadowgeom, shadowevent, renderer, raycaster;
+    var camera_in_use,combinedcamera, perspec_camera,webVRCamera, controls_in_use, scene, shadowgeom, shadowevent, renderer, raycaster;
     var ASCIIEffect,StereoEffect,OculusEffect;
     var regcontrols,asciicontrols,stereocontrols,perspecregcontrols;
     var outlinePass,composer,effectFXAA;
@@ -363,10 +363,11 @@
         perspec_camera.position.x=x;//-625;
         perspec_camera.position.y=y;//56;
 
-        webVRCamera.position.x=x;
-        webVRCamera.position.y=y;
-        webVRCamera.position.z=z;
-
+        if(webVRCamera) {
+            webVRCamera.position.x = x;
+            webVRCamera.position.y = y;
+            webVRCamera.position.z = z;
+        }
         combinedcamera.lookAt(new THREE.Vector3(fx,fy,fz));
         perspec_camera.lookAt(new THREE.Vector3(fx,fy,fz));
 
@@ -584,19 +585,19 @@
         OculusEffect.setSize( window.innerWidth || 1, window.innerHeight || 1);
         OculusEffect.shadowMapAutoUpdate = false;
 
-        if(renderer.vr) {
-            WEBVR.getVRDisplay(function (display) {
-                renderer.vr.setDevice(display);
-                webVRCamera = new THREE.WebVRCamera(display,renderer);
-                webVRCamera.updateMatrixWorld();
-                scene.add(webVRCamera);
-                webVRCamera.position.x=13;
-                webVRCamera.position.y=0;
-                webVRCamera.position.z=510;
+        //if(renderer.vr) {
+        WEBVR.getVRDisplay(function (display) {
+            renderer.vr.setDevice(display);
+            webVRCamera = new THREE.WebVRCamera(display,renderer);
+            webVRCamera.updateMatrixWorld();
+            scene.add(webVRCamera);
+            webVRCamera.position.x=13;
+            webVRCamera.position.y=0;
+            webVRCamera.position.z=510;
 
-                document.body.appendChild(WEBVR.getButton(display, renderer.domElement)); //THIS SHOULD ONLY SPAWN WHEN WANTED
-            });
-        }
+            document.body.appendChild(WEBVR.getButton(display, renderer.domElement)); //THIS SHOULD ONLY SPAWN WHEN WANTED
+        });
+        //}
 
 
 
@@ -902,12 +903,12 @@
                     controls_in_use = perspecregcontrols;stereobool=true;
                 }
                 break;
-            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);perspec_camera.translateZ(-MoveDelta);webVR_camera.translateZ(-MoveDelta);raytracing(event);break;//w
-            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);perspec_camera.translateZ(MoveDelta);webVR_camera.translateZ(MoveDelta);raytracing(event);break;//s
-            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);perspec_camera.translateX(-MoveDelta);webVR_camera.translateX(-MoveDelta);raytracing(event);break;//a
-            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);webVR_camera.translateX(MoveDelta);raytracing(event);break;//d
-            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);webVR_camera.translateY(MoveDelta);raytracing(event);break;//spacebar
-            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);webVR_camera.translateY(-MoveDelta);raytracing(event);break;//z
+            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);perspec_camera.translateZ(-MoveDelta);if(webVRCamera){webVRCamera.translateZ(-MoveDelta);}raytracing(event);break;//w
+            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);perspec_camera.translateZ(MoveDelta);if(webVRCamera){webVRCamera.translateZ(MoveDelta);}raytracing(event);break;//s
+            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);perspec_camera.translateX(-MoveDelta);if(webVRCamera){webVRCamera.translateX(-MoveDelta);}raytracing(event);break;//a
+            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);if(webVRCamera){webVRCamera.translateX(MoveDelta);}raytracing(event);break;//d
+            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);if(webVRCamera){webVRCamera.translateY(MoveDelta);}raytracing(event);break;//spacebar
+            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);if(webVRCamera){webVRCamera.translateY(-MoveDelta);}raytracing(event);break;//z
             case 82: event.preventDefault();CatchARide();break;
 
         }
