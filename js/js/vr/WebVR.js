@@ -36,7 +36,7 @@ var WEBVR = {
 
             } else {
 
-                //reject( 'Your browser does not support WebVR. See <a href="https://webvr.info">webvr.info</a> for assistance.' );
+                alert( 'Your browser does not support WebVR. Thus VR functionality will not be available. See <a href="https://webvr.info">webvr.info</a> for assistance.' );
 
             }
 
