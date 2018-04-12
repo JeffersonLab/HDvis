@@ -152,7 +152,7 @@
 <body id="body">
 
 
-
+<script src="js/vr/WebVR.js"></script>
 <script src="js/three.min.js"></script>
 <script src="js/controls/OrbitControls.js"></script>
 <script src="js/controls/DeviceOrientationControls.js"></script>
@@ -162,6 +162,7 @@
 <script src="js/GluexHDDSLoader.js"></script>
 <script src="js/GluexGUI.js"></script>
 <script src="js/effects/StereoEffect.js"></script>
+<script src="js/effects/VREffect.js"></script>
 <script src="js/cameras/CombinedCamera.js"></script>
 <script src="js/controls/TrackballControls.js"></script>
 
@@ -179,7 +180,7 @@
 <link href="js/contextMenu.js-master/contextMenu.css" rel="stylesheet" type="text/css" />
 
 
-<script src="js/vr/WebVR.js"></script>
+
 <script src="js/vr/OculusRiftEffect.js"></script>
 <!--<script src="js/threex.geometricglowmesh.js"></script>-->
 <!--<script src="js/threex.dilategeometry.js"></script>-->
@@ -187,6 +188,8 @@
 <!--<script src="js/cameras/CombinedCamera.js"></script>-->
 <script src="js/effects/AsciiEffect.js"></script>
 <script src="js/effects/VREffect.js"></script>
+<script src="js/vr/WebVRCamera.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r87/examples/js/vr/WebVR.js"></script>
 
 <!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
 
@@ -336,7 +339,7 @@
 
     keyState: new Array();
 
-    WEBVR.checkAvailability().catch(function (message) {console.log(WEBVR.getMessageContainer(message))});
+    WEBVR.checkAvailability().catch(function (message) {document.body.appendChild(WEBVR.getMessageContainer(message))});
 
     function switchToOrtho()
     {
@@ -363,11 +366,11 @@
         perspec_camera.position.x=x;//-625;
         perspec_camera.position.y=y;//56;
 
-        if(webVRCamera) {
+       /* if(webVRCamera) {
             webVRCamera.position.x = x;
             webVRCamera.position.y = y;
             webVRCamera.position.z = z;
-        }
+        }*/
         combinedcamera.lookAt(new THREE.Vector3(fx,fy,fz));
         perspec_camera.lookAt(new THREE.Vector3(fx,fy,fz));
 
@@ -554,7 +557,7 @@
         renderer.setClearColor( 0x000000 );
         document.body.appendChild( renderer.domElement );
         //renderer.autoClear = false;
-
+        renderer.vr.enabled  = true
 
         regcontrols = new THREE.OrbitControls( camera_in_use, renderer.domElement );
         perspecregcontrols = new THREE.OrbitControls( perspec_camera, renderer.domElement );
@@ -581,19 +584,23 @@
         OculusEffect.setSize( window.innerWidth || 1, window.innerHeight || 1);
         OculusEffect.shadowMapAutoUpdate = false;
 
-        //if(renderer.vr) {
-        WEBVR.getVRDisplay(function (display) {
+       // if(renderer.vr) {
+        /*WEBVR.getVRDisplay(function (display) {
             renderer.vr.setDevice(display);
-            webVRCamera = new THREE.WebVRCamera(display,renderer);
-            webVRCamera.updateMatrixWorld();
+           //webVRCamera = new THREE.WebVRCamera(display,renderer);
+            //webVRCamera.updateMatrixWorld();
             scene.add(webVRCamera);
             webVRCamera.position.x=13;
             webVRCamera.position.y=0;
             webVRCamera.position.z=510;
 
             document.body.appendChild(WEBVR.getButton(display, renderer.domElement)); //THIS SHOULD ONLY SPAWN WHEN WANTED
-        });
+        });*/
         //}
+        WEBVR.getVRDisplay( function( display ){
+            renderer.vr.setDevice( display );
+            document.body.appendChild( WEBVR.getButton( display, renderer.domElement ))
+        });
 
 
 
@@ -899,12 +906,12 @@
                     controls_in_use = perspecregcontrols;stereobool=true;
                 }
                 break;
-            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);perspec_camera.translateZ(-MoveDelta);if(webVRCamera){webVRCamera.translateZ(-MoveDelta);}raytracing(event);break;//w
-            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);perspec_camera.translateZ(MoveDelta);if(webVRCamera){webVRCamera.translateZ(MoveDelta);}raytracing(event);break;//s
-            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);perspec_camera.translateX(-MoveDelta);if(webVRCamera){webVRCamera.translateX(-MoveDelta);}raytracing(event);break;//a
-            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);if(webVRCamera){webVRCamera.translateX(MoveDelta);}raytracing(event);break;//d
-            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);if(webVRCamera){webVRCamera.translateY(MoveDelta);}raytracing(event);break;//spacebar
-            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);if(webVRCamera){webVRCamera.translateY(-MoveDelta);}raytracing(event);break;//z
+            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);perspec_camera.translateZ(-MoveDelta);raytracing(event);break;//w
+            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);perspec_camera.translateZ(MoveDelta);raytracing(event);break;//s
+            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);perspec_camera.translateX(-MoveDelta);raytracing(event);break;//a
+            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);raytracing(event);break;//d
+            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);raytracing(event);break;//spacebar
+            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);raytracing(event);break;//z
             case 82: event.preventDefault();CatchARide();break;
 
         }
@@ -2219,9 +2226,10 @@
         }
         else if( VRbool)
         {
+            console.log(perspec_camera.position.z);
             renderer.vr.enable=true;
             renderer.render(scene,perspec_camera);
-            OculusEffect.render(scene, camera_in_use);
+           // OculusEffect.render(scene, camera_in_use);
         }
         else
         {
