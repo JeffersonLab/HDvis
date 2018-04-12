@@ -297,6 +297,7 @@
     var container, stats;
 
     var camera_in_use,combinedcamera, perspec_camera,webVRCamera, controls_in_use, scene, shadowgeom, shadowevent, renderer, raycaster;
+    var player;
     var ASCIIEffect,StereoEffect,OculusEffect;
     var regcontrols,asciicontrols,stereocontrols,perspecregcontrols;
     var outlinePass,composer,effectFXAA;
@@ -334,8 +335,8 @@
 
     var selectedObjects = [];
 
-    var attached_camera=false;
-    var attached_name="track_Pi- Track Points 0";
+    var attached_camera=true;
+    var attached_name="track_Electron Track Points 3";
 
     keyState: new Array();
 
@@ -362,9 +363,9 @@
         combinedcamera.position.x=x;//-625;
         combinedcamera.position.y=y;//56;
 
-        perspec_camera.position.z =z;// 371;
-        perspec_camera.position.x=x;//-625;
-        perspec_camera.position.y=y;//56;
+        player.position.z =z;// 371;
+        player.position.x=x;//-625;
+        player.position.y=y;//56;
 
        /* if(webVRCamera) {
             webVRCamera.position.x = x;
@@ -531,14 +532,18 @@
 
         //camera_in_use=ortho_camera;//perspec_camera;
         //combinedcamera.add(perspec_camera);
-        scene.add(perspec_camera);
+       player=new THREE.Object3D();
+
+        player.add(perspec_camera);
+
+        scene.add(player);
         combinedcamera.position.z =510;// 371;
         combinedcamera.position.x=13;//-625;
         combinedcamera.position.y=0;//56;
 
-        perspec_camera.position.z =510;// 371;
-        perspec_camera.position.x=13;//-625;
-        perspec_camera.position.y=0;//56;
+        player.position.z =510;// 371;
+        player.position.x=13;//-625;
+        player.position.y=0;//56;
 
 
         camera_in_use=combinedcamera;
@@ -906,12 +911,12 @@
                     controls_in_use = perspecregcontrols;stereobool=true;
                 }
                 break;
-            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);perspec_camera.translateZ(-MoveDelta);raytracing(event);break;//w
-            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);perspec_camera.translateZ(MoveDelta);raytracing(event);break;//s
-            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);perspec_camera.translateX(-MoveDelta);raytracing(event);break;//a
-            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);perspec_camera.translateX(MoveDelta);raytracing(event);break;//d
-            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);perspec_camera.translateY(MoveDelta);raytracing(event);break;//spacebar
-            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);perspec_camera.translateY(-MoveDelta);raytracing(event);break;//z
+            case 87: event.preventDefault();camera_in_use.translateZ(-MoveDelta);player.translateZ(-MoveDelta);raytracing(event);break;//w
+            case 83: event.preventDefault();camera_in_use.translateZ(MoveDelta);player.translateZ(MoveDelta);raytracing(event);break;//s
+            case 65: event.preventDefault();camera_in_use.translateX(-MoveDelta);player.translateX(-MoveDelta);raytracing(event);break;//a
+            case 68: event.preventDefault();camera_in_use.translateX(MoveDelta);player.translateX(MoveDelta);raytracing(event);break;//d
+            case 32: event.preventDefault();camera_in_use.translateY(MoveDelta);player.translateY(MoveDelta);raytracing(event);break;//spacebar
+            case 90: event.preventDefault();camera_in_use.translateY(-MoveDelta);player.translateY(-MoveDelta);raytracing(event);break;//z
             case 82: event.preventDefault();CatchARide();break;
 
         }
