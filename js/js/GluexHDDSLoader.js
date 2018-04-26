@@ -309,7 +309,7 @@ THREE.GluexHDDSLoader.prototype = {
             var sector = new THREE.Mesh(SectorGeometry, material);
 
             sector.name = "SCsector_" + (i+1).toString();
-            sector.rotateZ((Phi0 + (i) * dPhi));
+            sector.rotateZ((Phi0 + (Math.PI/2.)+(i) * dPhi));
             sector.position.set(0 * Math.cos(Math.PI / 2. - (Phi0 + (i) * dPhi)), 0 * Math.sin(Math.PI / 2. - (Phi0 + (i) * dPhi)), 0.0);
 
             region.add(sector);
