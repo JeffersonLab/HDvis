@@ -335,12 +335,12 @@
 
     var selectedObjects = [];
 
-    var attached_camera=true;
+    var attached_camera=false;
     var attached_name="track_Electron Track Points 3";
 
     keyState: new Array();
 
-    WEBVR.checkAvailability().catch(function (message) {document.body.appendChild(WEBVR.getMessageContainer(message))});
+    //WEBVR.checkAvailability().catch(function (message) {document.body.appendChild(WEBVR.getMessageContainer(message))});
 
     function switchToOrtho()
     {

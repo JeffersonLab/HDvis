@@ -257,9 +257,9 @@ THREE.GluexHDDSLoader.prototype = {
 
         //sector geometry
         var data=xmlSection.querySelector('pgon[name="STRC"]').children;
-        var SectorGeometry = createPolyPlaneGeometry2(data,data.length,-6*Math.PI/180.,12*Math.PI/180.)
+        var SectorGeometry = createPolyPlaneGeometry2(data,data.length,-6*Math.PI/180.,12*Math.PI/180.);
         SectorGeometry.rotateX(-1*Math.PI/2.);
-        SectorGeometry.rotateY(Math.PI)
+        SectorGeometry.rotateY(Math.PI);
 
 
         var SC = new THREE.Group();
@@ -309,7 +309,7 @@ THREE.GluexHDDSLoader.prototype = {
             var sector = new THREE.Mesh(SectorGeometry, material);
 
             sector.name = "SCsector_" + (i+1).toString();
-            sector.rotateZ((Phi0 + (i) * dPhi));
+            sector.rotateZ((Phi0 + (Math.PI/2.)+(i) * dPhi));
             sector.position.set(0 * Math.cos(Math.PI / 2. - (Phi0 + (i) * dPhi)), 0 * Math.sin(Math.PI / 2. - (Phi0 + (i) * dPhi)), 0.0);
 
             region.add(sector);
@@ -408,8 +408,10 @@ THREE.GluexHDDSLoader.prototype = {
                     var moduleL = new THREE.Mesh(LongWireGeometry, materialL);
 
                     moduleL.name="CDCstraw_"+ring.toString()+"_"+j.toString();
-                    moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
                     moduleL.rotateX(rotX*Math.PI/180.);
+                    moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
+
+
 
                     region.add(moduleL);
                 }
