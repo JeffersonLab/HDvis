@@ -408,8 +408,9 @@ THREE.GluexHDDSLoader.prototype = {
                     var moduleL = new THREE.Mesh(LongWireGeometry, materialL);
 
                     moduleL.name="CDCstraw_"+ring.toString()+"_"+j.toString();
-                    moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
                     moduleL.rotateX(rotX*Math.PI/180.);
+                    moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
+
 
                     region.add(moduleL);
                 }
