@@ -2248,8 +2248,8 @@
 
     function cleanGeometry(scene, gluexGeometry) {
         if (scene && gluexGeometry) {
-           recursiveRemove(gluexGeometry.getObjectByName("CDC", true));
-            scene.remove(gluexGeometry.getObjectByName("CDC", true));
+           //recursiveRemove(gluexGeometry.getObjectByName("CDC", true));
+           // scene.remove(gluexGeometry.getObjectByName("CDC", true));
             recursiveRemove(gluexGeometry.getObjectByName("BCAL_details", true));
             scene.remove(gluexGeometry.getObjectByName("BCAL_details", true));
             recursiveRemove(gluexGeometry.getObjectByName("BCAL_details2", true));

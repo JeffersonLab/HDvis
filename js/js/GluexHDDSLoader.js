@@ -161,7 +161,7 @@ THREE.GluexHDDSLoader.prototype = {
 
         const deltaAngle = 2*Math.PI/(48*4);
 
-        let bcalDeltaAngle = this.bcalDeltaAngle
+        let bcalDeltaAngle = this.bcalDeltaAngle;
         for(let moduleIndex=0; moduleIndex<48; moduleIndex++) {
             // Build section geometries
             for(let sectorIndex = 0; sectorIndex<4; sectorIndex++) {
@@ -300,7 +300,7 @@ THREE.GluexHDDSLoader.prototype = {
 
         var ncopy = parseInt(sectors.getAttribute('ncopy'));
 
-        var Phi0 = parseFloat(sectors.getAttribute('Phi0'));
+        var Phi0 = (Math.PI/180)*parseFloat(sectors.getAttribute('Phi0'));
         var dPhi = (360. / ncopy) * (Math.PI / 180.);
 
 
@@ -318,7 +318,7 @@ THREE.GluexHDDSLoader.prototype = {
             var sector = new THREE.Mesh(SectorGeometry, material);
 
             sector.name = "SCsector_" + (i+1).toString();
-            sector.rotateZ((Phi0 + (Math.PI/2.)+(i) * dPhi));
+            sector.rotateZ((Phi0-(Math.PI/2.) +(i) * dPhi));
             sector.position.set(0, 0, 0.0);
 
             region.add(sector);
@@ -362,7 +362,7 @@ THREE.GluexHDDSLoader.prototype = {
             new THREE.MeshLambertMaterial({ visible:true ,color: 0x436280, transparent:true, opacity: 0.4, side: THREE.DoubleSide })
         );
         region.name='CDC';
-
+        //console.log(arrayofComponents);
         for (var i=0;i<arrayofComponents.length;i++) {
             if (i < 3)
                 continue;
@@ -371,7 +371,7 @@ THREE.GluexHDDSLoader.prototype = {
             var regionFullName = arrayofComponents[i].getAttribute('volume');
 
             var ncopy = parseInt(arrayofComponents[i].getAttribute('ncopy'));
-            var Phi0 = parseFloat(arrayofComponents[i].getAttribute('Phi0'));
+            var Phi0 = (Math.PI/180.)*parseFloat(arrayofComponents[i].getAttribute('Phi0'));
             var R = parseFloat(arrayofComponents[i].getAttribute('R_Z').split(" ")[0]);
             var dPhi = (360. / ncopy) * (Math.PI / 180.);
 
@@ -397,7 +397,7 @@ THREE.GluexHDDSLoader.prototype = {
                     var module = new THREE.Mesh(ShortWireGeometry, material);
 
                     module.name="CDCstraw_"+ring.toString()+"_"+j.toString();
-                    module.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
+                    module.position.set(R*Math.cos((Phi0+(j-1.0)*dPhi)), R*Math.sin((Phi0+(j-1.0)*dPhi)), 0.0);
 
 
                     region.add(module);
@@ -417,10 +417,13 @@ THREE.GluexHDDSLoader.prototype = {
                     var moduleL = new THREE.Mesh(LongWireGeometry, materialL);
 
                     moduleL.name="CDCstraw_"+ring.toString()+"_"+j.toString();
+                    moduleL.position.set(0.0, 0.0, 0.0);
                     moduleL.rotateX(rotX*Math.PI/180.);
-                    moduleL.rotateZ((Phi0+(j-1.0)*dPhi)*(Math.PI/180.));
-                    moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
-                    //moduleL.position.set(0.0, 0.0, 0.0);
+                    console.log(j+" gives "+(Phi0+(j-1.0)*dPhi)*(Math.PI/180.));
+                    moduleL.rotateZ((Phi0+(j-1.0)*dPhi));
+                    moduleL.position.set(R*Math.cos((Phi0+(j-1.0)*dPhi)), R*Math.sin((Phi0+(j-1.0)*dPhi)), 0.0);
+                    //moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
+                    //
                     //moduleL.translateX(R);
                     //moduleL.rotateZ(Phi0+(j-1)*dPhi);
 
