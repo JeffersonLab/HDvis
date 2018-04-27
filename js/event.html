@@ -696,9 +696,9 @@
             loadEventFromFile();
         });
 
-        //       object = new THREE.AxisHelper( 100 );
-        //       object.position.set( 0, 0, 0 );
-        //scene.add( object );
+              object = new THREE.AxisHelper( 100 );
+               object.position.set( 0, 0, 0 );
+        scene.add( object );
 
 
         canvas1 = document.createElement('canvas');
@@ -2248,7 +2248,7 @@
 
     function cleanGeometry(scene, gluexGeometry) {
         if (scene && gluexGeometry) {
-            recursiveRemove(gluexGeometry.getObjectByName("CDC", true));
+           recursiveRemove(gluexGeometry.getObjectByName("CDC", true));
             scene.remove(gluexGeometry.getObjectByName("CDC", true));
             recursiveRemove(gluexGeometry.getObjectByName("BCAL_details", true));
             scene.remove(gluexGeometry.getObjectByName("BCAL_details", true));

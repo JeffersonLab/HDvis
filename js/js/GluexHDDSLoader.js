@@ -1,4 +1,13 @@
 
+
+rotateAroundWorldAxis= function( object, axis, radians ) {
+    rotWorldMatrix = new THREE.Matrix4();
+    rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+    rotWorldMatrix.multiply(object.matrix);        // pre-multiply
+    object.matrix = rotWorldMatrix;
+    object.rotation.setFromRotationMatrix(object.matrix);
+}
+
 parseXYZ = function (dataStr) {
     if(dataStr){
         return dataStr
@@ -310,7 +319,7 @@ THREE.GluexHDDSLoader.prototype = {
 
             sector.name = "SCsector_" + (i+1).toString();
             sector.rotateZ((Phi0 + (Math.PI/2.)+(i) * dPhi));
-            sector.position.set(0 * Math.cos(Math.PI / 2. - (Phi0 + (i) * dPhi)), 0 * Math.sin(Math.PI / 2. - (Phi0 + (i) * dPhi)), 0.0);
+            sector.position.set(0, 0, 0.0);
 
             region.add(sector);
         }
@@ -368,7 +377,7 @@ THREE.GluexHDDSLoader.prototype = {
 
             var ring = i - 2;
 
-
+            var RotationAxis=new THREE.Vector3(0,0,1);
 
 
             for (var j = 1.0; j <= ncopy; j++)
@@ -409,8 +418,13 @@ THREE.GluexHDDSLoader.prototype = {
 
                     moduleL.name="CDCstraw_"+ring.toString()+"_"+j.toString();
                     moduleL.rotateX(rotX*Math.PI/180.);
+                    moduleL.rotateZ((Phi0+(j-1.0)*dPhi)*(Math.PI/180.));
                     moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
+                    //moduleL.position.set(0.0, 0.0, 0.0);
+                    //moduleL.translateX(R);
+                    //moduleL.rotateZ(Phi0+(j-1)*dPhi);
 
+                   //rotateAroundWorldAxis(moduleL,RotationAxis,Phi0+(j-1)*dPhi);//.rotateOnWorldAxis(RotationAxis,Phi0+(j-1)*dPhi);
 
                     region.add(moduleL);
                 }
