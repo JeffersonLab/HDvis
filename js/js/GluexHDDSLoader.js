@@ -377,11 +377,11 @@ THREE.GluexHDDSLoader.prototype = {
 
             var ring = i - 2;
 
-            var RotationAxis=new THREE.Vector3(0,0,1);
-
 
             for (var j = 1.0; j <= ncopy; j++)
             {
+                var Phi=(Phi0+(j-1.0)*dPhi);
+
                 if(regionFullName==="CDCstrawShort")
                 {
 
@@ -397,7 +397,7 @@ THREE.GluexHDDSLoader.prototype = {
                     var module = new THREE.Mesh(ShortWireGeometry, material);
 
                     module.name="CDCstraw_"+ring.toString()+"_"+j.toString();
-                    module.position.set(R*Math.cos((Phi0+(j-1.0)*dPhi)), R*Math.sin((Phi0+(j-1.0)*dPhi)), 0.0);
+                    module.position.set(R*Math.cos(Phi), R*Math.sin(Phi), 0.0);
 
 
                     region.add(module);
@@ -417,11 +417,21 @@ THREE.GluexHDDSLoader.prototype = {
                     var moduleL = new THREE.Mesh(LongWireGeometry, materialL);
 
                     moduleL.name="CDCstraw_"+ring.toString()+"_"+j.toString();
-                    moduleL.position.set(0.0, 0.0, 0.0);
+                    //moduleL.position.set(0.0, 0.0, 0.0);
+
+
+
+                    moduleL.rotateZ(Phi);
+
                     moduleL.rotateX(rotX*Math.PI/180.);
-                    console.log(j+" gives "+(Phi0+(j-1.0)*dPhi)*(Math.PI/180.));
-                    moduleL.rotateZ((Phi0+(j-1.0)*dPhi));
-                    moduleL.position.set(R*Math.cos((Phi0+(j-1.0)*dPhi)), R*Math.sin((Phi0+(j-1.0)*dPhi)), 0.0);
+
+
+
+                    //console.log(j+" gives "+(Phi0+(j-1.0)*dPhi)*(Math.PI/180.));
+
+
+
+                    moduleL.position.set(R*Math.cos(Phi), R*Math.sin(Phi), 0.0);
                     //moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);
                     //
                     //moduleL.translateX(R);
