@@ -419,17 +419,10 @@ THREE.GluexHDDSLoader.prototype = {
                     moduleL.name="CDCstraw_"+ring.toString()+"_"+j.toString();
                     //moduleL.position.set(0.0, 0.0, 0.0);
 
-
-
                     moduleL.rotateZ(Phi);
-
                     moduleL.rotateX(rotX*Math.PI/180.);
 
-
-
                     //console.log(j+" gives "+(Phi0+(j-1.0)*dPhi)*(Math.PI/180.));
-
-
 
                     moduleL.position.set(R*Math.cos(Phi), R*Math.sin(Phi), 0.0);
                     //moduleL.position.set(R*Math.cos(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), R*Math.sin(Math.PI/2.-(Phi0+(j-1.0)*dPhi)), 0.0);

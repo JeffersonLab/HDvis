@@ -430,6 +430,11 @@
                             name: "Barrel Top",
                             title: "Barrel Top",
                             fun: function(){ snapTo(0,370,210,0,0,210) }
+                        },
+                        {
+                            name: "Barrel Downstream",
+                            title: "Barrel Downstream",
+                            fun: function(){ snapTo(0,0,500,0,0,0) }
                         }
 
                     ]
@@ -1882,6 +1887,8 @@
         var SceneTime=SceneClock;
 
         var eventObj = scene.getObjectByName("GluexEvent");
+
+
 
         if( eventObj ) {
             var eventobjs = eventObj.children;
