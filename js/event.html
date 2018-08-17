@@ -367,11 +367,11 @@
         player.position.x=x;//-625;
         player.position.y=y;//56;
 
-       /* if(webVRCamera) {
-            webVRCamera.position.x = x;
-            webVRCamera.position.y = y;
-            webVRCamera.position.z = z;
-        }*/
+        /* if(webVRCamera) {
+             webVRCamera.position.x = x;
+             webVRCamera.position.y = y;
+             webVRCamera.position.z = z;
+         }*/
         combinedcamera.lookAt(new THREE.Vector3(fx,fy,fz));
         perspec_camera.lookAt(new THREE.Vector3(fx,fy,fz));
 
@@ -527,7 +527,7 @@
 
         //Camera
 
-        combinedcamera = new THREE.CombinedCamera( window.innerWidth / 2, window.innerHeight / 2, 70, 1, 1000, - 500, 1000 );
+        combinedcamera = new THREE.CombinedCamera( window.innerWidth / 2, window.innerHeight / 2, 70, 1, 2000, - 500, 1000 );
         combinedcamera.toPerspective();
         //camera_in_use.toOrthographic();
 
@@ -537,18 +537,18 @@
 
         //camera_in_use=ortho_camera;//perspec_camera;
         //combinedcamera.add(perspec_camera);
-       player=new THREE.Object3D();
+        player=new THREE.Object3D();
 
         player.add(perspec_camera);
 
         scene.add(player);
-        combinedcamera.position.z =510;// 371;
-        combinedcamera.position.x=13;//-625;
-        combinedcamera.position.y=0;//56;
+        combinedcamera.position.z =-308.75;//510;// 371;
+        combinedcamera.position.x=-163.5;//13;//-625;
+        combinedcamera.position.y=219.8;//0;//56;
 
-        player.position.z =510;// 371;
-        player.position.x=13;//-625;
-        player.position.y=0;//56;
+        player.position.z =-308.75;//510;// 371;
+        player.position.x=-163.5;//13;//-625;
+        player.position.y=219.8;//0;//56;
 
 
         camera_in_use=combinedcamera;
@@ -594,7 +594,7 @@
         OculusEffect.setSize( window.innerWidth || 1, window.innerHeight || 1);
         OculusEffect.shadowMapAutoUpdate = false;
 
-       // if(renderer.vr) {
+        // if(renderer.vr) {
         /*WEBVR.getVRDisplay(function (display) {
             renderer.vr.setDevice(display);
            //webVRCamera = new THREE.WebVRCamera(display,renderer);
@@ -701,9 +701,9 @@
             loadEventFromFile();
         });
 
-         /*     object = new THREE.AxisHelper( 100 );
-               object.position.set( 0, 0, 0 );
-        scene.add( object );*/
+        /*     object = new THREE.AxisHelper( 100 );
+              object.position.set( 0, 0, 0 );
+       scene.add( object );*/
 
 
         canvas1 = document.createElement('canvas');
@@ -1435,24 +1435,28 @@
         }//RESPECT THE CLOCK BOUNDS TOF POINTS
         else {
             if (ViewerConfig.FDCPseudoVis !== "Off")
-                eventobj.material.visible = true;
+                eventobj.material.visible = false;
         }
         if (ViewerConfig.FDCPseudoVis === "Dynamic") {
-            if (SceneTime > eventobj.userData.time && eventobj.material.color.b === 1) {
+            if (SceneTime > eventobj.userData.time && SceneTime < eventobj.userData.time+10 ) {
                 eventobj.scale.set(2, 2, 2);
                 eventobj.geometryNeedsUpdate = true;
                 eventobj.material.color.r = 1;
                 eventobj.material.color.g = 0;
                 eventobj.material.color.b = 0;
                 eventobj.colorsNeedUpdate = true;
+               eventobj.material.visible=true;
+
             }
-            else if (SceneTime < eventobj.userData.time && eventobj.material.color.r === 1) {
+            else{
+            //else if ((SceneTime < eventobj.userData.time ||  SceneTime>eventobj.userData.time+1) ) {
                 eventobj.scale.set(1, 1, 1);
                 eventobj.geometryNeedsUpdate = true;
                 eventobj.material.color.r = 0;
                 eventobj.material.color.g = 0;
                 eventobj.material.color.b = 1;
                 eventobj.colorsNeedUpdate = true;
+                eventobj.material.visibile=false;
             }
         }
         else if (ViewerConfig.FDCPseudoVis === "Off" && eventobj.material.visible === true) {
@@ -1589,12 +1593,12 @@
             var y_pos=eventobj.userData.steps[draw_count-1][1]+(interpoint_t*(delta_y/delta_t));
             var z_pos=eventobj.userData.steps[draw_count-1][2]+(interpoint_t*(delta_z/delta_t));
 
-           /* console.log("x: "+eventobj.userData.steps[draw_count-1][0]+" v "+x_pos+" v "+eventobj.userData.steps[facing_index-1][0]);
-            console.log("y: "+eventobj.userData.steps[draw_count-1][1]+" v "+y_pos+" v "+eventobj.userData.steps[facing_index-1][1]);
-            console.log("z: "+eventobj.userData.steps[draw_count-1][2]+" v "+z_pos+" v "+eventobj.userData.steps[facing_index-1][2]);
-           */
-           // console.log(eventobj.userData.steps[draw_count-1][3]+track_start);
-           // console.log("--->"+(eventobj.userData.steps[facing_index-1][3]+track_start));
+            /* console.log("x: "+eventobj.userData.steps[draw_count-1][0]+" v "+x_pos+" v "+eventobj.userData.steps[facing_index-1][0]);
+             console.log("y: "+eventobj.userData.steps[draw_count-1][1]+" v "+y_pos+" v "+eventobj.userData.steps[facing_index-1][1]);
+             console.log("z: "+eventobj.userData.steps[draw_count-1][2]+" v "+z_pos+" v "+eventobj.userData.steps[facing_index-1][2]);
+            */
+            // console.log(eventobj.userData.steps[draw_count-1][3]+track_start);
+            // console.log("--->"+(eventobj.userData.steps[facing_index-1][3]+track_start));
 
 
             snapTo(x_pos,y_pos,z_pos,eventobj.userData.steps[facing_index-1][0],eventobj.userData.steps[facing_index-1][1],eventobj.userData.steps[facing_index-1][2]);
@@ -1608,7 +1612,6 @@
 
             thisGeo.drawRange.count = draw_count;
             //ViewerConfig.SceneTimeMessage=timeToShow.toFixed(3);
-
 
             if ((ViewerConfig.positive_track_line === 'Off' && eventobj.userData.charge === 1) ||
                 (ViewerConfig.negative_track_line === 'Off' && eventobj.userData.charge === -1) ||
@@ -1643,7 +1646,7 @@
         }
 
         if (ViewerConfig.FDCHitVis === "Dynamic") {
-            if (SceneTime > eventobj.userData.t) {
+            if (SceneTime > eventobj.userData.t && SceneTime <eventobj.userData.t+2) {
                 if ((ViewerConfig.FDCHitTypeVis === "Cathodes" && eventobj.userData.type !== 0) || (ViewerConfig.FDCHitTypeVis === "Anodes" && eventobj.userData.type === 0) || ViewerConfig.FDCHitTypeVis === "Both") {
                     eventobj.material.visible = true;
                 }
@@ -1651,7 +1654,7 @@
                     eventobj.material.visible = false;
                 }
             }
-            else if (SceneTime < eventobj.userData.t && eventobj.material.visible !== false) {
+            else if (SceneTime < eventobj.userData.t || SceneTime >eventobj.userData.t+2 && eventobj.material.visible !== false) {
                 eventobj.material.visible = false;
             }
         }
@@ -1879,6 +1882,42 @@
 
     }
 
+    function animateCamera(SceneTime)
+    {
+        //combinedcamera.position.z =-308.75;//510;// 371;
+        //combinedcamera.position.x=-163.5;//13;//-625;
+        //combinedcamera.position.y=219.8;//0;//56;
+        //{x: -205.07031982812043, y: 45.01505423722457, z: 779.0962733367471
+        console.log(SceneTime);
+        var totalT=30;//45.;
+        var vel_x=(-205.1+163.5)/(totalT);
+        var vel_y=(44-219.8)/(totalT);
+        var vel_z=(779.1+308.75)/(totalT);//50;//36.2;
+        newx=vel_x*SceneTime-163.5;
+        newy=vel_y*SceneTime+219.8;
+        newz=vel_z*SceneTime-308.75;
+
+        if(newz>779.1) {
+            newz = 779.1;
+            newx=-205.1;
+            newy=44;
+        }
+
+        if(SceneTime<17) {
+            snapTo(newx, newy, newz, 0, 0, 0);
+        }
+        else
+        {
+            lookvel=60;
+            lookdir=lookvel*(SceneTime-17);
+            if(lookdir>625)
+                lookdir=625;
+            snapTo(newx, newy, newz, 0, 0, lookdir );
+        }
+
+
+
+    }
     function doAnimation()
     {
         var time_scale=ViewerConfig.time_scale;
@@ -1903,6 +1942,7 @@
                 SceneTime = max_total_time - min_start_time;
             }
 
+            animateCamera(SceneTime);
             for (var i = 0; i < eventobjs.length; i++) {
                 var category_name=eventobjs[i].name.split('_')[0];
                 if ( category_name === "track") {
@@ -2222,7 +2262,7 @@
         //UpdateAnimationTriggers(scene.getObjectByName('GluexEvent').children);
 
         firstShowing=true;
-      //  doAnimation();
+        //  doAnimation();
         //if(!isPlaying)
         //    render();
     }
@@ -2241,7 +2281,7 @@
             console.log(perspec_camera.position.z);
             renderer.vr.enable=true;
             renderer.render(scene,perspec_camera);
-           // OculusEffect.render(scene, camera_in_use);
+            // OculusEffect.render(scene, camera_in_use);
         }
         else
         {
@@ -2255,7 +2295,7 @@
 
     function cleanGeometry(scene, gluexGeometry) {
         if (scene && gluexGeometry) {
-           recursiveRemove(gluexGeometry.getObjectByName("CDC", true));
+            recursiveRemove(gluexGeometry.getObjectByName("CDC", true));
             scene.remove(gluexGeometry.getObjectByName("CDC", true));
             recursiveRemove(gluexGeometry.getObjectByName("BCAL_details", true));
             scene.remove(gluexGeometry.getObjectByName("BCAL_details", true));

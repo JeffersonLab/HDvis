@@ -34,10 +34,10 @@ var HDVisConfig = function() {
     this.CDCHitVis= 'Dynamic';
 
     this.FDCHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.FDCHitVis= 'Off';
+    this.FDCHitVis= 'Dynamic';
 
     this.FDCHitType_Options ={"Both": 'Both',"Cathodes": 'Cathodes', "Anodes": 'Anodes'};
-    this.FDCHitTypeVis= 'Anodes';
+    this.FDCHitTypeVis= 'Both';
 
     this.TOFPoint_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
     this.TOFPointVis= 'Dynamic';
@@ -67,7 +67,7 @@ var HDVisConfig = function() {
     this.negative_track_color = [0, 255, 0]; // RGB array
     this.neutral_track_color = [255, 255, 0]; // RGB array
     this.bkg_color = 0x000000;
-    this.time_scale=5; // ns/sec
+    this.time_scale=3; // ns/sec
 
     this.FCAL_EScale = 100.;
     this.TrackingChiSq_NDF_cut = 0.;
@@ -75,8 +75,8 @@ var HDVisConfig = function() {
     this.FCAL_ShowerEcut = 0.;
     this.TimingsNeedsUpdate=true;
 
-    this.min_clock_time=-100;
-    this.max_clock_time=100;
+    this.min_clock_time=-5;
+    this.max_clock_time=40;
 
     this.BCAL_ShowerEcut = 0.;
     //this.SceneTimeMessage=""
