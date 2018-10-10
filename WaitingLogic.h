@@ -12,7 +12,7 @@
 class WaitingLogic {
 public:
     WaitingLogic():
-            _autoplayDuration(std::chrono::seconds(2)),
+            _autoplayDuration(std::chrono::seconds(30)),
             _isAutoplay(false),
             _mustProceedToNextEvent(false),
             _mustQuit(false)
