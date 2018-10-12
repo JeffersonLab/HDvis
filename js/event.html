@@ -1646,7 +1646,7 @@
         }
 
         if (ViewerConfig.FDCHitVis === "Dynamic") {
-            if (SceneTime > eventobj.userData.t && SceneTime <eventobj.userData.t+2) {
+            if (SceneTime > eventobj.userData.t ) {
                 if ((ViewerConfig.FDCHitTypeVis === "Cathodes" && eventobj.userData.type !== 0) || (ViewerConfig.FDCHitTypeVis === "Anodes" && eventobj.userData.type === 0) || ViewerConfig.FDCHitTypeVis === "Both") {
                     eventobj.material.visible = true;
                 }
@@ -1654,9 +1654,7 @@
                     eventobj.material.visible = false;
                 }
             }
-            else if (SceneTime < eventobj.userData.t || SceneTime >eventobj.userData.t+2 && eventobj.material.visible !== false) {
-                eventobj.material.visible = false;
-            }
+            
         }
         else if (ViewerConfig.FDCHitVis === "Off" && eventobj.material.visible === true) {
             eventobj.material.visible = false;
