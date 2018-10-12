@@ -69,7 +69,7 @@ var HDVisConfig = function() {
     this.bkg_color = 0x000000;
     this.time_scale=3; // ns/sec
 
-    this.FCAL_EScale = 100.;
+    this.FCAL_EScale = 450.;
     this.TrackingChiSq_NDF_cut = 0.;
     this.FCAL_HitEcut = 0.;
     this.FCAL_ShowerEcut = 0.;

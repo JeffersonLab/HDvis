@@ -154,7 +154,7 @@ THREE.GluexEventLoader.prototype = {
 
                     scope.group.add(trackMesh);
 
-                    var linematerial = new THREE.LineBasicMaterial({color: material.color, linewidth: 1000});
+                    var linematerial = new THREE.LineBasicMaterial({color: material.color, linewidth: 10});
                     linematerial.side = THREE.DoubleSide;
                     var lineBufferGeo = new THREE.BufferGeometry().fromGeometry(geometry);
                     lineBufferGeo.drawRange.count = 0;
@@ -225,7 +225,7 @@ THREE.GluexEventLoader.prototype = {
 
                 scope.group.add(trackMesh);
 
-                var linematerial = new THREE.LineBasicMaterial({color: material.color, linewidth: 2});
+                var linematerial = new THREE.LineBasicMaterial({color: material.color, linewidth: 10});
                 linematerial.side = THREE.DoubleSide;
                 var lineBufferGeo = new THREE.BufferGeometry().fromGeometry(geometry);
                 var trackLineMesh = new THREE.Line(lineBufferGeo, linematerial);
