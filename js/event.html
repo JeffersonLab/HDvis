@@ -152,8 +152,8 @@
 
     <!--<a href="#" class="button blue">button</a>-->
 
-    <a href="#" class="button gray" OnClick="next_click()">next</a>
-    <a id="autoPlay" href="#" class="button gray" OnClick="autoplay_click()">autoplay</a>
+    <a href="#" class="button gray" OnClick="Offlinenext_click()">next</a>
+    <!--<a id="autoPlay" href="#" class="button gray" OnClick="autoplay_click()">autoplay</a>-->
     <span id="janaStatus" style="color: darkgray"> JANA status </span>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock </span>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="play_pause" > <a href="#" class="button gray" OnClick="togglePlay()">play/pause</a> </span>
@@ -190,6 +190,18 @@
         clock.start();
 
     }
+    function Offlinenext_click() {
+        next_click_count++;
+        console.log("calling /api/v1/next");
+        firstShowing=true;
+        clock.stop();
+
+        cleanGeometry(scene,gluexGeometry);
+        var fileStr='event_'+next_click_count.toString();
+        loadEventFromFile(fileStr);
+        clock.start();
+
+    }
 
     function autoplay_click() {
         console.log("calling /api/v1/autoplay-on");
@@ -213,7 +225,7 @@
                 var message = "JANA: " + data.janaState + " event: " + data.eventNumber.toString();
 
                 if(data.janaState === "Idle" && previousJanaState!== "Idle") {
-                    loadEventFromFile();
+                    loadEventFromFile('event.json');
                 }
 
                 previousJanaState = data.janaState;
@@ -270,7 +282,7 @@
 
     var taptimeout;
     var lastTap = 0;
-
+    var next_click_count=1;
     var selectedObjects = [];
 
     keyState: new Array();
@@ -313,7 +325,9 @@
         }
     }
 
-    function loadEventFromFile() {
+    function loadEventFromFile(fileStr) {
+        console.log("loading Event:")
+        console.log(fileStr)
         if(!gluexGeometry){
             console.info("Can't load event because geometry is still not loaded");
             return;
@@ -340,7 +354,7 @@
         eventLoader.setConfiguration(ViewerConfig);
         eventLoader.setGeometry(gluexGeometry,shadowgeom);
         //shadoweventLoader.setGeometry(gluexGeometry);
-        eventLoader.load('./event.json', function(loadedEvent) {
+        eventLoader.load(fileStr, function(loadedEvent) {
             /* if(shadowevent)
              {
                  recursiveRemove(shadowevent);
@@ -514,7 +528,7 @@
             shadowgeom = loadedGeom;
             gluexGeometry = loadedGeom.clone();
             // when we have a geometry, we can load the event
-            loadEventFromFile();
+            loadEventFromFile('event_'+next_click_count.toString());
         });
 
         //       object = new THREE.AxisHelper( 100 );
