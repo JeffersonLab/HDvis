@@ -49,6 +49,9 @@ class JEventProcessor_EventReader:public jana::JEventProcessor{
 		jerror_t fini(void);						///< Called after last event of last event source has been processed.
 
         hdvis::ApplicationContext &_context;
+
+	int WRITE_JSON_SERIES;
+	int m_index;
 };
 
 #endif // _JEventProcessor_EventReader_
