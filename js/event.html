@@ -197,7 +197,7 @@
         clock.stop();
 
         cleanGeometry(scene,gluexGeometry);
-        var fileStr='event_'+next_click_count.toString();
+        var fileStr='event_'+next_click_count.toString()+".json";
         loadEventFromFile(fileStr);
         clock.start();
 
@@ -528,7 +528,7 @@
             shadowgeom = loadedGeom;
             gluexGeometry = loadedGeom.clone();
             // when we have a geometry, we can load the event
-            loadEventFromFile('event_'+next_click_count.toString());
+            loadEventFromFile('event_'+next_click_count.toString()+".json");
         });
 
         //       object = new THREE.AxisHelper( 100 );
