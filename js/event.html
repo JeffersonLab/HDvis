@@ -147,14 +147,15 @@
 <script src="js/effects/VREffect.js"></script>
 <!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
 
-<nav style="position:absolute; left: 100px; z-index: 100">
+<!--<nav style="position:absolute; left: 100px; z-index: 100">-->
+    <nav style="position:absolute; left: 0px; z-index: 100">
     <!--<a href="#" class="button green">button</a>-->
 
     <!--<a href="#" class="button blue">button</a>-->
-
+    <img src="./gluex_logo.png">
     <a href="#" class="button gray" OnClick="Offlinenext_click()">next</a>
     <!--<a id="autoPlay" href="#" class="button gray" OnClick="autoplay_click()">autoplay</a>-->
-    <span id="janaStatus" style="color: darkgray"> JANA status </span>
+    <!--<span id="janaStatus" style="color: darkgray"> JANA status </span>-->
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock </span>
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="play_pause" > <a href="#" class="button gray" OnClick="togglePlay()">play/pause</a> </span>
     <div style="position: absolute; top: 125px; left: -90px; width: 1000px; white-space: pre-line;" id="ObjectInfo"> </div>
@@ -477,8 +478,8 @@
         controls_in_use=regcontrols;
         container.appendChild( renderer.domElement );
 
-        stats = new Stats();
-        document.body.appendChild(stats.dom);
+        //stats = new Stats();
+        //document.body.appendChild(stats.dom);
 
         raycaster = new THREE.Raycaster();
 
