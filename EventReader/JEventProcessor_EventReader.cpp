@@ -275,7 +275,6 @@ jerror_t JEventProcessor_EventReader::evnt(JEventLoop *loop, uint64_t eventnumbe
 	    if( WRITE_JSON_SERIES ) fileName << "_" << m_index++; 
 	    fileName << ".json";
 	    
-	    //            eventFile.open("www/event.json", std::ofstream::trunc);
 	    eventFile.open( fileName.str(), std::ofstream::trunc);
 
             std::cout<<"opened/created event json "<<endl;
