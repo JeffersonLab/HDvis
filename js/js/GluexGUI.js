@@ -34,10 +34,10 @@ var HDVisConfig = function() {
     this.CDCHitVis= 'Dynamic';
 
     this.FDCHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.FDCHitVis= 'Off';
+    this.FDCHitVis= 'Dynamic';
 
     this.FDCHitType_Options ={"Both": 'Both',"Cathodes": 'Cathodes', "Anodes": 'Anodes'};
-    this.FDCHitTypeVis= 'Anodes';
+    this.FDCHitTypeVis= 'Both';
 
     this.TOFPoint_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
     this.TOFPointVis= 'Dynamic';
