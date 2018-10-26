@@ -38,7 +38,10 @@ JEventProcessor_EventReader::JEventProcessor_EventReader(hdvis::ApplicationConte
     _context(context)
 {
   WRITE_JSON_SERIES = 0;
+  JSON_STARTING_INDEX = 1;
+
   gPARMS->SetDefaultParameter( "HDVIS:WRITE_JSON_SERIES", WRITE_JSON_SERIES );
+  gPARMS->SetDefaultParameter( "HDVIS:JSON_STARTING_INDEX", JSON_STARTING_INDEX );
 }
 
 //------------------
@@ -54,7 +57,7 @@ JEventProcessor_EventReader::~JEventProcessor_EventReader() {
 //------------------
 jerror_t JEventProcessor_EventReader::init(void) {
 
-  m_index = 1;
+  m_index = JSON_STARTING_INDEX;
   
     return NOERROR;
 }
