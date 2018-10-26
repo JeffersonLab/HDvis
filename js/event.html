@@ -258,7 +258,7 @@
         clock.stop();
 
         cleanGeometry(scene,gluexGeometry);
-        var fileStr='event_'+next_click_count.toString()+".json";
+        var fileStr='./event_library/event_'+next_click_count.toString()+".json";
         loadEventFromFile(fileStr);
         clock.start();
 
@@ -507,15 +507,20 @@
         eventLoader.setConfiguration(ViewerConfig);
         eventLoader.setGeometry(gluexGeometry,shadowgeom);
         //shadoweventLoader.setGeometry(gluexGeometry);
+
+        console.log(fileStr)
         eventLoader.load(fileStr, function(loadedEvent) {
-            /* if(shadowevent)
-             {
-                 recursiveRemove(shadowevent);
-             }*/
+            if ( status == "error" ) {
+                console.log("error")
+            }
+
+
+             console.log(loadedEvent)
             var newEvent=loadedEvent;
             scene.add(newEvent);
             UpdateAnimationTriggers(newEvent.children);//loadedEvent.children);
         });
+        
 
         firstShowing=true;
         SceneClockOffset=min_start_time;
