@@ -51,6 +51,7 @@ class JEventProcessor_EventReader:public jana::JEventProcessor{
         hdvis::ApplicationContext &_context;
 
 	int WRITE_JSON_SERIES;
+	int JSON_STARTING_INDEX;
 	int m_index;
 };
 
