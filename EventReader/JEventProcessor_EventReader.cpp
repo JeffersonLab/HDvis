@@ -37,6 +37,8 @@ extern DApplication *gDana;
 JEventProcessor_EventReader::JEventProcessor_EventReader(hdvis::ApplicationContext &context):
     _context(context)
 {
+  WRITE_JSON_SERIES = 0;
+  gPARMS->SetDefaultParameter( "HDVIS:WRITE_JSON_SERIES", WRITE_JSON_SERIES );
 }
 
 //------------------
@@ -52,6 +54,8 @@ JEventProcessor_EventReader::~JEventProcessor_EventReader() {
 //------------------
 jerror_t JEventProcessor_EventReader::init(void) {
 
+  m_index = 1;
+  
     return NOERROR;
 }
 //------------------
@@ -264,7 +268,14 @@ jerror_t JEventProcessor_EventReader::evnt(JEventLoop *loop, uint64_t eventnumbe
 
 
             std::ofstream eventFile;
-            eventFile.open("www/event.json", std::ofstream::trunc);
+
+	    ostringstream fileName;
+
+	    fileName << "www/event";
+	    if( WRITE_JSON_SERIES ) fileName << "_" << m_index++; 
+	    fileName << ".json";
+	    
+	    eventFile.open( fileName.str(), std::ofstream::trunc);
 
             std::cout<<"opened/created event json "<<endl;
             eventFile<< tao::json::to_string(eventJson, 4);

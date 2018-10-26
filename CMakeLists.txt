@@ -22,7 +22,7 @@ include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS})
 
 link_directories(
         $ENV{JANA_HOME}/lib
-        $ENV{HALLD_HOME}/$ENV{BMS_OSNAME}/lib
+        $ENV{HALLD_RECON_HOME}/$ENV{BMS_OSNAME}/lib
         $ENV{EVIOROOT}/lib
         $ENV{SQLITECPP_HOME}/lib
         $ENV{CCDB_HOME}/lib
@@ -37,7 +37,7 @@ add_definitions(${ROOT_CXX_FLAGS})
 
 include_directories(
         $ENV{JANA_HOME}/include
-        $ENV{HALLD_HOME}/$ENV{BMS_OSNAME}/include
+        $ENV{HALLD_RECON_HOME}/$ENV{BMS_OSNAME}/include
         EventReader
 )
 

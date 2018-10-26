@@ -275,7 +275,7 @@
     var previousJanaState = "";
 
 
-    (function poll() {
+    /*(function poll() {
         //alert("hey");
         $.ajax({
             url: "/api/v1/status",
@@ -302,7 +302,7 @@
             complete: setTimeout(function() {poll()}, 1000),
             timeout: 2000
         })
-    })();
+    })();*/
 
     var clock = new THREE.Clock();
     var container, stats;
