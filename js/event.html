@@ -199,7 +199,7 @@
     <!--<a href="#" class="button blue">button</a>-->
     <img src="./gluex_logo.png">
     <a href="#" class="button gray" OnClick="Offlinenext_click()">next</a>
-    <!--<a id="autoPlay" href="#" class="button gray" OnClick="autoplay_click()">autoplay</a>-->
+    <a id="autoPlay" href="#" class="button gray" OnClick="Offlineautoplay_click()">autoplay</a>
     <!--<span id="janaStatus" style="color: darkgray"> JANA status </span>-->
     <span style="display: block; text-align: center;color: green; font-size: 30px" id="EventClock" > Event Clock  </span>
     <div class="slidecontainer">
@@ -256,9 +256,10 @@
         console.log("calling /api/v1/next");
         firstShowing=true;
         clock.stop();
-
+        var num_to_load=((next_click_count%EventLibrary_num)+1);
+        console.log("loading: "+num_to_load.toString());
         cleanGeometry(scene,gluexGeometry);
-        var fileStr='./event_library/event_'+next_click_count.toString()+".json";
+        var fileStr='./event_library/event_'+((next_click_count%EventLibrary_num)+1).toString()+".json";
         loadEventFromFile(fileStr);
         clock.start();
 
@@ -269,6 +270,28 @@
         xhr.open('GET', "/api/v1/autoplay-on", true);
         xhr.send();
     }
+    function Offlineautoplay_click() {
+        IsAuto=!IsAuto;
+        if(IsAuto)
+        {
+            var element = document.getElementById("autoPlay");
+            element.classList.remove("gray");
+            element.classList.add("green");
+        }
+        else
+        {
+            var element = document.getElementById("autoPlay");
+            element.classList.remove("green");
+            element.classList.add("gray");
+        }
+        
+    }
+    window.setInterval(function(){
+  if(IsAuto)
+  {
+      Offlinenext_click();
+  }
+}, 30000);
 </script>
 
 <script>
@@ -304,6 +327,8 @@
         })
     })();*/
 
+    var IsAuto=false;
+    var EventLibrary_num=3;
     var clock = new THREE.Clock();
     var container, stats;
 
