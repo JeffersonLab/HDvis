@@ -11,6 +11,7 @@
 #include <math.h>
 
 class BCAL {
+
 public:
 
     static tao::json::value Add_BCALHits(vector<const DBCALHit *> BCALHits) {
@@ -64,7 +65,6 @@ public:
                                          {"t_raw",      t_raw},
                                          {"cellId",     cellId}
                                  });
-
         return BCALHit;
     }
 

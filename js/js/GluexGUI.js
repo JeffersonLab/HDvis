@@ -14,51 +14,51 @@ var HDVisConfig = function() {
     this.ftofDetail = 'modules'; // "box", "sections", "modules"
 
     this.positive_track_lineOptions ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.positive_track_line= 'Static';
+    this.positive_track_line= 'Dynamic';
 
     this.negative_track_lineOptions ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.negative_track_line= 'Static';
+    this.negative_track_line= 'Dynamic';
 
     this.neutral_track_lineOptions ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.neutral_track_line= 'Static';
+    this.neutral_track_line= 'Dynamic';
 
     this.TOFHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.TOFHitVis= 'Static';
+    this.TOFHitVis= 'Dynamic';
 
 
 
     this.SCHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.SCHitVis= 'Static';
+    this.SCHitVis= 'Dynamic';
 
     this.CDCHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.CDCHitVis= 'Static';
+    this.CDCHitVis= 'Dynamic';
 
     this.FDCHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.FDCHitVis= 'Static';
+    this.FDCHitVis= 'Dynamic';
 
     this.FDCHitType_Options ={"Both": 'Both',"Cathodes": 'Cathodes', "Anodes": 'Anodes'};
     this.FDCHitTypeVis= 'Both';
 
     this.TOFPoint_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.TOFPointVis= 'Static';
+    this.TOFPointVis= 'Dynamic';
 
     this.BCALHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.BCALHitVis= 'Static';
+    this.BCALHitVis= 'Dynamic';
 
     this.BCALPoint_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.BCALPointVis= 'Static';
+    this.BCALPointVis= 'Dynamic';
 
     this.BCALShower_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.BCALShowerVis= 'Static';
+    this.BCALShowerVis= 'Dynamic';
 
     this.FCALHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.FCALHitVis= 'Static';
+    this.FCALHitVis= 'Dynamic';
 
     this.FCALShower_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.FCALShowerVis= 'Static';
+    this.FCALShowerVis= 'Dynamic';
 
     this.FDCPseudo_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
-    this.FDCPseudoVis= 'Static';
+    this.FDCPseudoVis= 'Dynamic';
 
     this.positive_track_swim=false;
     this.negative_track_swim=false;
@@ -75,8 +75,8 @@ var HDVisConfig = function() {
     this.FCAL_ShowerEcut = 0.;
     this.TimingsNeedsUpdate=true;
 
-    this.min_clock_time=-5;
-    this.max_clock_time=40;
+    this.min_clock_time=-20;
+    this.max_clock_time=100;
 
     this.BCAL_ShowerEcut = 0.;
     //this.SceneTimeMessage=""

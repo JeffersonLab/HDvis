@@ -225,7 +225,6 @@ jerror_t JEventProcessor_EventReader::evnt(JEventLoop *loop, uint64_t eventnumbe
             auto scdHitsJson = StartC::Add_SCHits(SCHits);
 
             //TOF
-
             auto tofPointsJson = TOF::Add_TOFPoints(TOFPoints);
             auto tofHitsJson = TOF::Add_TOFHits(TOFHits);
 

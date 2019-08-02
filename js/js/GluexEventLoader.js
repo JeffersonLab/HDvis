@@ -128,7 +128,7 @@ THREE.GluexEventLoader.prototype = {
                     }
                     var material = new THREE.PointsMaterial({
                         color: trackcolor,
-                        size: 4,
+                        size: 2,
                         opacity: .6,
                         visible: swim_vis,
                         //blending: THREE.AdditiveBlending,
@@ -148,7 +148,7 @@ THREE.GluexEventLoader.prototype = {
                         steps: track_to_display.points,
                         track_hypos:track.TrackHypos,
                         current_hypo: track.BestTrackingPID
-                    }
+                    };
                     trackMesh.name = geometry.name;
 
 
@@ -434,10 +434,10 @@ THREE.GluexEventLoader.prototype = {
                 var vis = false;
                 if (scope.Configuration.FDCHitVis !== "Off") {
                     if (scope.Configuration.FDCHitTypeVis === "Cathodes" && fhit.type !== 0) {
-                        vis = true;
+                        vis = false;
                     }
                     else if (scope.Configuration.FDCHitTypeVis === "Anodes" && fhit.type === 0) {
-                        vis = true;
+                        vis = false;
                     }
                     else {
                         vis = true;
