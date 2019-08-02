@@ -25,7 +25,7 @@ link_directories(
         $ENV{HALLD_RECON_HOME}/$ENV{BMS_OSNAME}/lib
         $ENV{EVIOROOT}/lib
         $ENV{ETROOT}/lib
-        #$ENV{SQLITECPP_HOME}/lib
+        $ENV{SQLITECPP_HOME}/lib
         $ENV{CCDB_HOME}/lib
         $ENV{XERCESCROOT}/lib/
         /usr/lib64/mysql/
@@ -122,7 +122,7 @@ target_link_libraries(hdvis
         # xerces
         xerces-c-3.1
 
-        #SQLiteCpp
+        SQLiteCpp
         sqlite3
 
         # ccdb
