@@ -42,7 +42,7 @@ include_directories(
         EventReader
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -lgfortran")
 
 #geometry.cpp EventReader/Tracking.h EventReader/FCAL.h
 set(SOURCE_FILES
@@ -114,8 +114,6 @@ target_link_libraries(hdvis
 
         ${ROOT_LIBRARIES}
 
-
-
         #JANA
 
         evio
@@ -143,8 +141,9 @@ target_link_libraries(hdvis
         pthread
 
         DANA
-        et_remote
-        et
+        #et lines needed for connecting to the ET system in the counting house removed during testing
+        #et_remote
+        #et
 
         )
 

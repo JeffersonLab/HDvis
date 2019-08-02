@@ -20,6 +20,7 @@ public:
 
         }
 
+
     void ProceedToNextEvent(){_mustProceedToNextEvent = true;}
     void SetAutoPlay(bool value){_isAutoplay = value;}
     bool IsAutoPlay() { return _isAutoplay; }

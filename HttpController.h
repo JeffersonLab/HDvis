@@ -124,7 +124,6 @@ protected:
             snprintf(buf, sizeof(buf), fmt, res.status);
             res.set_content(buf, "text/html");
         });
-
         /*_server.set_logger([&](const Request &req, const Response &res) {
             printf("%s", Log(req, res).c_str());
         });*/
