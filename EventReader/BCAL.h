@@ -87,7 +87,6 @@ public:
         auto jsonposArray = tao::json::value::array({});
 
         //std::cout<<track_points[j].X()<<" , "<< track_points[j].Y()<<" , "<<track_points[j].Z()<<" , "<<track_point_times[j]<<std::endl;
-
         jsonposArray.emplace_back(tao::json::value::array({r * cos(theta), r * sin(theta), z}));
 
 

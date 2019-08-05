@@ -63,7 +63,6 @@ set(SOURCE_FILES
         httplib.h
         HttpController.h
         KeyboardControl.h
-        StringUtils.h
 
         tao/json.hpp
         )

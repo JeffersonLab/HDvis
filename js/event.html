@@ -1435,10 +1435,10 @@
         }//RESPECT THE CLOCK BOUNDS TOF POINTS
         else {
             if (ViewerConfig.FDCPseudoVis !== "Off")
-                eventobj.material.visible = false;
+                eventobj.material.visible = true;
         }
         if (ViewerConfig.FDCPseudoVis === "Dynamic") {
-            if (SceneTime > eventobj.userData.time && SceneTime < eventobj.userData.time+10 ) {
+            if (SceneTime > eventobj.userData.time /*&& SceneTime < eventobj.userData.time+10*/ ) {
                 eventobj.scale.set(2, 2, 2);
                 eventobj.geometryNeedsUpdate = true;
                 eventobj.material.color.r = 1;
@@ -1456,7 +1456,7 @@
                 eventobj.material.color.g = 0;
                 eventobj.material.color.b = 1;
                 eventobj.colorsNeedUpdate = true;
-                eventobj.material.visibile=false;
+                eventobj.material.visible=true;
             }
         }
         else if (ViewerConfig.FDCPseudoVis === "Off" && eventobj.material.visible === true) {

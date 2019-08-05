@@ -937,7 +937,7 @@ static WSInit wsinit_;
             std::string path = base_dir_ + req.path;
 
             if (!path.empty() && path.back() == '/') {
-                path += "index.html";
+                path += "event.html";
             }
 
             if (detail::is_file(path)) {
