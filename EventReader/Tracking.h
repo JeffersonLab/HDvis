@@ -61,7 +61,6 @@ public:
                 rt->Reset();
                 //auto Track_ps = new TEvePointSet();
 
-
                 double mass = ChargedTracks[i]->dChargedTrackHypotheses[w]->mass();
                 rt->SetMass(mass);
                 //rt.SetMass(TrackCandidates[i]->mass());
@@ -100,7 +99,6 @@ public:
 
                 //std::vector<>
                 //for (int k = 0; k < ChargedTracks[i]->GetAssociatedAncestors()->size(); k++) {
-
                 //}
 
                 // event_out<<WriteTrackJSON2(name, momentum,charge,TrackChiSq_NDF, track_points);

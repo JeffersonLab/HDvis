@@ -26,7 +26,6 @@ var HDVisConfig = function() {
     this.TOFHitVis= 'Dynamic';
 
 
-
     this.SCHit_Options ={"Off": 'Off',"Static": 'Static', "Dynamic": 'Dynamic'};
     this.SCHitVis= 'Dynamic';
 
